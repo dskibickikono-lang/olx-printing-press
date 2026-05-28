@@ -1,0 +1,118 @@
+{
+  "endpoint": "POST /v1/offers",
+  "method": "POST",
+  "raw_url": "https://prd-emiter.s.external.techadshero.pl/v1/offers",
+  "status": 200,
+  "request_headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Accept-Language": "en-US,en;q=0.9,pl;q=0.8",
+    "Connection": "keep-alive",
+    "Content-Length": "1296",
+    "Content-Type": "application/json",
+    "Host": "prd-emiter.s.external.techadshero.pl",
+    "Origin": "https://www.olx.pl",
+    "Referer": "https://www.olx.pl/",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "cross-site",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "account": "olx-group-pl",
+    "cid": "19d6dcaa50cx5762b9b4",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\""
+  },
+  "request_body": {
+    "adCount": 1,
+    "appId": "OLXPLRWEB",
+    "customCriteria": {
+      "abtest": [
+        "carparts-353@a",
+        "carparts-792@b",
+        "cars-85873@b",
+        "eupp-3910@b",
+        "eupp-4060@a",
+        "eupp-4152@b",
+        "jobs-10878@a",
+        "jobs-11348@a",
+        "jobs-11351@a",
+        "jobs-11488@b",
+        "oesx-5576@a",
+        "poc-99@a",
+        "pos-3051@b",
+        "ream-2630@a",
+        "recpl-1481@a",
+        "search-2674@b",
+        "search-2713@b"
+      ],
+      "abtests": [],
+      "account": "private",
+      "cat_id": "4|1447|1754",
+      "cat_l0": "praca",
+      "cat_l0_id": "4",
+      "cat_l0_name": "praca",
+      "cat_l0_path": "praca",
+      "cat_l1": "produkcja",
+      "cat_l1_id": "1447",
+      "cat_l1_name": "produkcja",
+      "cat_l1_path": "produkcja",
+      "cat_l2": "obsluga-produkcji",
+      "cat_l2_id": "1754",
+      "cat_l2_name": "obsługa produkcji",
+      "cat_l2_path": "obsluga-produkcji",
+      "category_id": "1754",
+      "container": "baxter-l-nat3",
+      "currency": "pln",
+      "env": "production",
+      "environment": "production",
+      "lang": "pl",
+      "limit": "40",
+      "offset": "960",
+      "page": "ads",
+      "platform": "rweb",
+      "segment": [],
+      "sessionlong": "19d6dcaa50cx5762b9b4",
+      "slot": "native_2_omnihero_test",
+      "user_email_sha256": "1ff9650ae8424c968817d5861c6d83b9bd91cc20eed56a8f95a1e55ab2c193f6",
+      "user_status": "1",
+      "user_uuid": "23c4a435-f691-4115-8044-b7d5795c6616",
+      "user_uuid_sha256": "0acbe7a2bc7836dc52a0862e5eba24ae2d63ab2bb5996f4524c41e96749e1146",
+      "viewtype": "list"
+    },
+    "slotHash": "a619e4df-7708-4383-b40c-49aeaa81c19f",
+    "types": [
+      {
+        "dimensions": [
+          {
+            "height": 1,
+            "width": 1
+          }
+        ],
+        "type": "NATIVE"
+      }
+    ]
+  },
+  "response_headers": {
+    "Access-Control-Allow-Origin": "*",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Connection": "keep-alive",
+    "Content-Language": "en-US",
+    "Content-Type": "application/json;charset=utf-8",
+    "Date": "Thu, 21 May 2026 18:02:27 GMT",
+    "Expires": "0",
+    "Pragma": "no-cache",
+    "Server": "nginx",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+    "Transfer-Encoding": "chunked",
+    "Vary": "Access-Control-Request-Headers",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "0"
+  },
+  "response_body": {
+    "data": [],
+    "meta": null
+  },
+  "response_body_known": true
+}

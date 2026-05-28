@@ -1,0 +1,48 @@
+{
+  "endpoint": "GET /api/v1/seo/d/content/",
+  "method": "GET",
+  "raw_url": "https://www.olx.pl/api/v1/seo/d/content/?category_id=1754&locale=pl",
+  "status": 200,
+  "request_headers": {
+    ":authority": "www.olx.pl",
+    ":method": "GET",
+    ":path": "/api/v1/seo/d/content/?category_id=1754&locale=pl",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/praca/produkcja/obsluga-produkcji/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "version": "v1.19",
+    "x-client": "DESKTOP",
+    "x-device-id": "1b5d8dae-6d06-43c1-b24d-738f5b4644a0",
+    "x-fingerprint": "fbdc4f53959cdb4af47c1cffae5cc2e35c6324e638a283d8d11dae88fc3236ac3fef60c9cf99daeee8380ebb100f22a6faed307981c3a6ca4e1f7a2acddfea3321f2c817b2cc220c3fef60c9cf99daee3fef60c9cf99daee4e1f7a2acddfea33b497a357830277b800d2d70001a8f455308e012c59cf7bdd93ba89d2bc096e295c6324e638a283d85a1778be62509b00e8380ebb100f22a66452dcce37bc7a72e2dd2fa9fb4257646edcefe65587f9d212ef91844389788652921f5f9cea558ad4cd2dc56075a1f2d6732ea217e771924e1f7a2acddfea33e8380ebb100f22a65c6324e638a283d8faed307981c3a6ca85dd7ae142a6c1c7345bf81ff62a2ec4edb80d5780ab2861e707abe489749430bccb3ff9c592977647cb9fdfa4136f51e0a8d9bd2152e9e06df5e1f064573a111124304c5a37d509d5e3a2df978cc98281c4694103397b84007c3963de1362e7d8b7668586e5befd9a7cce06fbd6049945ec0f1d83431de81fa7f0020eee7e44d5e3a2df978cc9824a4dc57f0eecaa4b30b16804a9e21876",
+    "x-platform-type": "mobile-html5"
+  },
+  "request_body": null,
+  "response_headers": {
+    "age": "3444",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 17:02:37 GMT",
+    "vary": "Origin",
+    "via": "1.1 bf8300a72b6d0584e2f6b1df22e3f548.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "DfUldbXRVoZQ_DG_ov6bBRJ4pbzOpsP24rO1IKPpJG2uwOPTADxKdA==",
+    "x-amz-cf-pop": "WAW51-P3",
+    "x-cache": "Hit from cloudfront"
+  },
+  "response_body": {
+    "description": "Skorzystaj z największego serwisu ogłoszeniowego w Polsce. Kupuj to, czego pragniesz i sprzedawaj to, czego już nie potrzebujesz w kategorii Obsługa produkcji!",
+    "h1": "",
+    "seoText": "",
+    "title": "Dla Ciebie wszystko - sprawdź kategorię Obsługa produkcji",
+    "topListText": ""
+  },
+  "response_body_known": true
+}

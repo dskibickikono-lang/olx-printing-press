@@ -1,0 +1,51 @@
+{
+  "endpoint": "GET /experiments/listing",
+  "method": "GET",
+  "raw_url": "https://jobs-api.olx.pl/experiments/listing",
+  "status": 200,
+  "request_headers": {
+    ":authority": "jobs-api.olx.pl",
+    ":method": "GET",
+    ":path": "/experiments/listing",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "pl-PL, pl",
+    "olx-locale": "pl-PL",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+  },
+  "request_body": null,
+  "response_headers": {
+    "access-control-allow-credentials": "true",
+    "access-control-allow-origin": "https://www.olx.pl",
+    "age": "701",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "cache-control": "max-age=1800",
+    "content-length": "46",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 17:47:52 GMT",
+    "vary": "Origin",
+    "via": "1.1 99fb599746871d6030f477057ffdeb06.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "48tFvSRoAKZG5e9OeH2CDsBxAIcKWhkUIYnHwXrRe7iSyXEhUVdSlg==",
+    "x-amz-cf-pop": "WAW51-P5",
+    "x-amzn-requestid": "1a1f0178-67ec-4c87-b3a5-88b55e7de7d2",
+    "x-amzn-trace-id": "Root=1-6a0f4548-304cba3265274a026834ca84;Parent=2ad10b899061013b;Sampled=0;Lineage=1:2d783b92:0",
+    "x-cache": "Hit from cloudfront"
+  },
+  "response_body": {
+    "data": {
+      "alias": "listing",
+      "id": "RECPL-1044"
+    }
+  },
+  "response_body_known": true
+}

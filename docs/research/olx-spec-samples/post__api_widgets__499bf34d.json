@@ -1,0 +1,204 @@
+{
+  "endpoint": "POST /api/widgets",
+  "method": "POST",
+  "raw_url": "https://prompts.maze.co/api/widgets",
+  "status": 200,
+  "request_headers": {
+    ":authority": "prompts.maze.co",
+    ":method": "POST",
+    ":path": "/api/widgets",
+    ":scheme": "https",
+    "accept": "application/json",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "content-length": "2",
+    "content-type": "application/json",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "x-api-key": "<redacted>",
+    "x-maze-correlation-id": "1779386347998-2457.0729615868413",
+    "x-maze-snippet-src": "contextual-widget"
+  },
+  "request_body": {},
+  "response_headers": {
+    "access-control-allow-origin": "*",
+    "content-length": "4300",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Thu, 21 May 2026 17:59:09 GMT",
+    "etag": "W/\"10cc-lT2NI5gBum/mwFqyc/nQgTGbAVo\"",
+    "x-powered-by": "Express"
+  },
+  "response_body": [
+    {
+      "body": "Weź udział w badaniu OLX i pomóż nam zbudować narzędzia, które pomogą Ci zdobyć przewagę w poszukiwaniu nieruchomości.",
+      "createdAt": "2026-05-05T09:47:43.938Z",
+      "domain": "www.olx.pl",
+      "id": "81b054a3-5fe0-4a81-9b98-cc75283fdfc3",
+      "mazeId": [
+        "529422187"
+      ],
+      "mode": "NEWTAB",
+      "name": "[Buyers] OLX_Seeker_monetization_houses_sale",
+      "paths": [
+        "/nieruchomosci/domy/sprzedaz/*"
+      ],
+      "removeBranding": true,
+      "startButtonLabel": "Weź udział",
+      "styles": {
+        "buttonBackgroundColor": "#02282C",
+        "buttonBorderRadius": "12px",
+        "buttonTextColor": "#FFFFFF",
+        "position": "BOTTOM_RIGHT"
+      },
+      "teamId": "198998636",
+      "title": "Planujesz zakup nieruchomości?",
+      "updatedAt": "2026-05-05T09:48:20.447Z",
+      "uuid": "81b054a3-5fe0-4a81-9b98-cc75283fdfc3"
+    },
+    {
+      "body": "Weź udział w badaniu OLX i pomóż nam zbudować narzędzia, które pomogą Ci zdobyć przewagę w poszukiwaniu nieruchomości.",
+      "createdAt": "2026-05-05T09:45:54.837Z",
+      "domain": "www.olx.pl",
+      "id": "3ca49142-4873-4da5-93fe-321ede02a27f",
+      "mazeId": [
+        "529422187"
+      ],
+      "mode": "NEWTAB",
+      "name": "[Buyers] OLX_Seeker_monetization_apartments_sale",
+      "paths": [
+        "/nieruchomosci/mieszkania/sprzedaz/*"
+      ],
+      "removeBranding": true,
+      "startButtonLabel": "Weź udział",
+      "styles": {
+        "buttonBackgroundColor": "#02282C",
+        "buttonBorderRadius": "12px",
+        "buttonTextColor": "#FFFFFF",
+        "position": "BOTTOM_RIGHT"
+      },
+      "teamId": "198998636",
+      "title": "Planujesz zakup nieruchomości?",
+      "updatedAt": "2026-05-05T09:48:05.361Z",
+      "uuid": "3ca49142-4873-4da5-93fe-321ede02a27f"
+    },
+    {
+      "body": "Weź udział w badaniu OLX i pomóż nam zbudować narzędzia, które pomogą Ci zdobyć przewagę w poszukiwaniu nieruchomości.",
+      "createdAt": "2026-05-05T11:26:25.236Z",
+      "domain": "www.olx.pl",
+      "id": "3319a3e9-7d2b-4d70-b07f-f0be0dabf49d",
+      "mazeId": [
+        "529422222"
+      ],
+      "mode": "NEWTAB",
+      "name": "[Tenants] OLX_Seeker_monetization_apartments",
+      "paths": [
+        "/nieruchomosci/mieszkania/wynajem/*"
+      ],
+      "removeBranding": true,
+      "startButtonLabel": "Weź udział",
+      "styles": {
+        "buttonBackgroundColor": "#02282C",
+        "buttonBorderRadius": "12px",
+        "buttonTextColor": "#FFFFFF",
+        "position": "BOTTOM_RIGHT"
+      },
+      "teamId": "198998636",
+      "title": "Planujesz wynająć nieruchomość?",
+      "updatedAt": "2026-05-05T11:26:25.236Z",
+      "uuid": "3319a3e9-7d2b-4d70-b07f-f0be0dabf49d"
+    },
+    {
+      "body": "Weź udział w badaniu OLX i pomóż nam zbudować narzędzia, które pomogą Ci zdobyć przewagę w poszukiwaniu nieruchomości.",
+      "createdAt": "2026-05-05T11:28:24.241Z",
+      "domain": "www.olx.pl",
+      "id": "5107f505-e1c4-442e-9f5b-99a3a18d2c02",
+      "mazeId": [
+        "529422222"
+      ],
+      "mode": "NEWTAB",
+      "name": "[Tenants] OLX_Seeker_monetization_houses",
+      "paths": [
+        "/nieruchomosci/domy/wynajem/*"
+      ],
+      "removeBranding": true,
+      "startButtonLabel": "Weź udział",
+      "styles": {
+        "buttonBackgroundColor": "#02282C",
+        "buttonBorderRadius": "12px",
+        "buttonTextColor": "#FFFFFF",
+        "position": "BOTTOM_RIGHT"
+      },
+      "teamId": "198998636",
+      "title": "Planujesz wynająć nieruchomość?",
+      "updatedAt": "2026-05-05T11:28:24.241Z",
+      "uuid": "5107f505-e1c4-442e-9f5b-99a3a18d2c02"
+    },
+    {
+      "body": "Odpowiedz na dwa pytania i pomóż nam usprawnić drzewo kategorii na OLX.",
+      "createdAt": "2025-06-17T14:01:19.628Z",
+      "domain": "www.olx.pl",
+      "id": "5b50c647-dc18-42a5-982d-351f78d112b9",
+      "mazeId": [
+        "401483293"
+      ],
+      "mode": "INAPP",
+      "name": "Wózki general search desktop",
+      "paths": [
+        "/oferty/q-w%C3%B3zek-wid%C5%82owy/",
+        "/dla-firm/q-w%C3%B3zek-wid%C5%82owy/"
+      ],
+      "removeBranding": true,
+      "startButtonLabel": "Przejdź do ankiety",
+      "styles": {
+        "buttonBackgroundColor": "#000000",
+        "buttonBorderRadius": "8px",
+        "buttonTextColor": "#FFFFFF",
+        "position": "MIDDLE_RIGHT"
+      },
+      "teamId": "198998636",
+      "title": "Dzień dobry!",
+      "updatedAt": "2025-06-17T14:33:23.667Z",
+      "uuid": "5b50c647-dc18-42a5-982d-351f78d112b9"
+    },
+    {
+      "body": "Odpowiedz na dwa pytania i pomóż nam usprawnić drzewo kategorii na OLX.",
+      "createdAt": "2025-06-17T14:25:47.181Z",
+      "domain": "www.olx.pl",
+      "id": "d74fec0c-c12f-41d5-988c-c24c5b7a1464",
+      "mazeId": [
+        "403996772"
+      ],
+      "mode": "INAPP",
+      "name": "Wózki moto category desktop",
+      "paths": [
+        "/motoryzacja/q-w%C3%B3zek-wid%C5%82owy/",
+        "/motoryzacja/budowlane/wozki-widlowe/q-w%C3%B3zek-wid%C5%82owy/",
+        "/motoryzacja/budowlane/q-w%C3%B3zek-wid%C5%82owy/"
+      ],
+      "removeBranding": true,
+      "startButtonLabel": "Przejdź do ankiety",
+      "styles": {
+        "buttonBackgroundColor": "#000000",
+        "buttonBorderRadius": "8px",
+        "buttonTextColor": "#FFFFFF",
+        "position": "MIDDLE_RIGHT"
+      },
+      "teamId": "198998636",
+      "title": "Dzień dobry!",
+      "updatedAt": "2025-06-17T14:25:47.181Z",
+      "uuid": "d74fec0c-c12f-41d5-988c-c24c5b7a1464"
+    }
+  ],
+  "response_body_known": true,
+  "redactions": [
+    "request_headers.x-api-key"
+  ]
+}

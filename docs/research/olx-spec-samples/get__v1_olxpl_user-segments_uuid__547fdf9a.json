@@ -1,0 +1,41 @@
+{
+  "endpoint": "GET /v1/olxpl/user-segments/{uuid}",
+  "method": "GET",
+  "raw_url": "https://api.unified-segmentation.baxter.olx.org/v1/olxpl/user-segments/23c4a435-f691-4115-8044-b7d5795c6616",
+  "status": 200,
+  "request_headers": {
+    ":authority": "api.unified-segmentation.baxter.olx.org",
+    ":method": "GET",
+    ":path": "/v1/olxpl/user-segments/23c4a435-f691-4115-8044-b7d5795c6616",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+  },
+  "request_body": null,
+  "response_headers": {
+    "access-control-allow-origin": "*",
+    "content-length": "2",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 17:59:11 GMT",
+    "via": "1.1 9ac192ffc1203361ea1141b56df84966.cloudfront.net (CloudFront)",
+    "x-amz-apigw-id": "dugtbGWADoEEBIw=",
+    "x-amz-cf-id": "jdktQo0makS04GJf6d5pDYEnHztpN0jtzLBYGyJJAWrGYhqJoNyUEg==",
+    "x-amz-cf-pop": "AMS58-P3",
+    "x-amzn-requestid": "cb71b47e-28af-40b2-b00d-ead17bf05058",
+    "x-amzn-trace-id": "Root=1-6a0f47ef-00af1e715d9846b646f1f0fe;Parent=5fd2f77ce9e775b6;Sampled=0;Lineage=1:eaab8613:0",
+    "x-cache": "Miss from cloudfront"
+  },
+  "response_body": [],
+  "response_body_known": true
+}

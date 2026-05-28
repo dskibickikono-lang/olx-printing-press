@@ -1,0 +1,63 @@
+{
+  "endpoint": "POST /challenge",
+  "method": "POST",
+  "raw_url": "https://friction.olxgroup.com/challenge",
+  "status": 200,
+  "request_headers": {
+    ":authority": "friction.olxgroup.com",
+    ":method": "POST",
+    ":path": "/challenge",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "content-length": "177",
+    "content-type": "application/json",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "x-user-tests": "eyJjYXJwYXJ0cy0zNTMiOiJhIiwiY2FycGFydHMtNzkyIjoiYiIsImNhcnMtODU4NzMiOiJiIiwiZXVwcC0zOTEwIjoiYiIsImV1cHAtNDA2MCI6ImEiLCJldXBwLTQxNTIiOiJiIiwiam9icy0xMDg3OCI6ImEiLCJqb2JzLTExMzQ4IjoiYSIsImpvYnMtMTEzNTEiOiJhIiwiam9icy0xMTQ4OCI6ImIiLCJvZXN4LTU1NzYiOiJhIiwicG9jLTk5IjoiYSIsInBvcy0zMDUxIjoiYiIsInJlYW0tMjYzMCI6ImEiLCJyZWNwbC0xNDgxIjoiYSIsInNlYXJjaC0yNjc0IjoiYiIsInNlYXJjaC0yNzEzIjoiYiJ9"
+  },
+  "request_body": {
+    "action": "reveal_phone_number",
+    "actor": {
+      "username": "1b5d8dae-6d06-43c1-b24d-738f5b4644a0"
+    },
+    "aud": "atlas",
+    "scene": {
+      "ad_id": "770309963",
+      "origin": "www.olx.pl",
+      "sitecode": "olxpl"
+    }
+  },
+  "response_headers": {
+    "access-control-allow-origin": "*",
+    "access-control-expose-headers": "X-User-Tests,Date",
+    "content-length": "825",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 18:00:56 GMT",
+    "via": "1.1 a1b9623058220e111430672a0ebed6ea.cloudfront.net (CloudFront)",
+    "x-amz-apigw-id": "dug91GkuDoEEFWQ=",
+    "x-amz-cf-id": "mJzisNn_gqRKASTst-OBOBfIzCLvcPeZb9xkVTaSD5pLb8k63k1XFA==",
+    "x-amz-cf-pop": "WAW51-P6",
+    "x-amzn-requestid": "81651c5b-34e2-46b3-84ed-2a92fcd52f4b",
+    "x-amzn-trace-id": "Root=1-6a0f4858-186604ad36b9f21516a5052f;Parent=3783a6c8d023adf6;Sampled=0;Lineage=1:4afbea31:0",
+    "x-cache": "Miss from cloudfront",
+    "x-user-tests": "e30="
+  },
+  "response_body": {
+    "challenge": {
+      "id": "7fec28e4-683e-4844-b7db-fa041cb99961",
+      "type": "blank"
+    },
+    "context": "AQICAHi3+BTvjzRFUsNdrt7mCe5ZtDW2IWbZMMvYsJ1G5E8EXAGTODrJXlmvU0gvgdODiutTAAAB7zCCAesGCSqGSIb3DQEHBqCCAdwwggHYAgEAMIIB0QYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAzrV0YdBH9Et2ur7TECARCAggGip/0YRIZGCaw2p59069sAuJunDNfzTnC39EpTYcbVtZ5Ytzo5+7Vd4ev2j8aKr4OvGOgeapU3ZRdyuzS3f/lxZaRFSFoe92WejHwim/iSXS/qcczbMtGDdbkHAHv2hpflv+6HbHrLs2MSfBf88iU4INxD3zB4K3WNAJZGwuRL7TJbGFLsJN/C3AIgwN0LGOdAksdlWVsn8TySTe4rWKQwwMhz1P7RjiJzESNEUWR3Xq4O3nRTz3FOz1pMcjB/yes7SqbqXy7S5+Kz+o/fclPidtdLcFNtKOvPZ8HH0kvueNJPbLfVF+9REkSjPe+yeNkZoGE9/fakjVYizQeNPcQK6KoHOesXkNULKQbz689CfTHflm5PpugVXGVLDtJ4xxP/gbE4EB2GKJvqTbG4qJ11OPCugaaq0H2yl9pjVQIhgcjkHZ+2elPEDwpY7naIukBpTqkE303IQtDisHeR9ordNiXBNWIUy01zFMsOaeLLo63BTSXUBrzxaNr3QwPdE4TtyioiI5/LTv7mMBdhFMcgS6nvFylEhnyQzl3d+G2zZIoYUA"
+  },
+  "response_body_known": true
+}

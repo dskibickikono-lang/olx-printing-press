@@ -1,0 +1,43 @@
+{
+  "endpoint": "OPTIONS /graphql",
+  "method": "OPTIONS",
+  "raw_url": "https://jobs-api.olx.pl/graphql?operationName=CompanyProfileEmployerSegment&variables=%7B%22userUUID%22%3A%22dcac09dc-d86e-4722-892c-cf6e19f15fb7%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%228bdce7641716c9c2f727f054824f640c56de097f2cbb5aa552c695ef26b04831%22%7D%7D",
+  "status": 200,
+  "request_headers": {
+    ":authority": "jobs-api.olx.pl",
+    ":method": "OPTIONS",
+    ":path": "/graphql?operationName=CompanyProfileEmployerSegment&variables=%7B%22userUUID%22%3A%22dcac09dc-d86e-4722-892c-cf6e19f15fb7%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%228bdce7641716c9c2f727f054824f640c56de097f2cbb5aa552c695ef26b04831%22%7D%7D",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "access-control-request-headers": "content-type,olx-locale",
+    "access-control-request-method": "GET",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+  },
+  "request_body": null,
+  "response_headers": {
+    "access-control-allow-credentials": "true",
+    "access-control-allow-headers": "content-type,olx-locale",
+    "access-control-allow-methods": "GET, POST, PUT, PATCH, DELETE, HEAD",
+    "access-control-allow-origin": "https://www.olx.pl",
+    "access-control-max-age": "60",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "content-length": "0",
+    "date": "Thu, 21 May 2026 18:02:40 GMT",
+    "server": "CloudFront",
+    "strict-transport-security": "max-age=31536000",
+    "via": "1.1 c2922f7013da92f83ff7e6bb34db8be6.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "MhBly0oUa7gj5UqtcsdcfOLJh1YCBm-RTEWfpBHZHg8SuPljQoO_rw==",
+    "x-amz-cf-pop": "ARN52-P1",
+    "x-cache": "Miss from cloudfront"
+  },
+  "response_body": null,
+  "response_body_known": false
+}

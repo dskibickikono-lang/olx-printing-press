@@ -1,0 +1,51 @@
+{
+  "endpoint": "POST /exchange",
+  "method": "POST",
+  "raw_url": "https://friction.olxgroup.com/exchange",
+  "status": 200,
+  "request_headers": {
+    ":authority": "friction.olxgroup.com",
+    ":method": "POST",
+    ":path": "/exchange",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "content-length": "766",
+    "content-type": "application/json",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+  },
+  "request_body": {
+    "context": "AQICAHi3+BTvjzRFUsNdrt7mCe5ZtDW2IWbZMMvYsJ1G5E8EXAGTODrJXlmvU0gvgdODiutTAAAB7zCCAesGCSqGSIb3DQEHBqCCAdwwggHYAgEAMIIB0QYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAzrV0YdBH9Et2ur7TECARCAggGip/0YRIZGCaw2p59069sAuJunDNfzTnC39EpTYcbVtZ5Ytzo5+7Vd4ev2j8aKr4OvGOgeapU3ZRdyuzS3f/lxZaRFSFoe92WejHwim/iSXS/qcczbMtGDdbkHAHv2hpflv+6HbHrLs2MSfBf88iU4INxD3zB4K3WNAJZGwuRL7TJbGFLsJN/C3AIgwN0LGOdAksdlWVsn8TySTe4rWKQwwMhz1P7RjiJzESNEUWR3Xq4O3nRTz3FOz1pMcjB/yes7SqbqXy7S5+Kz+o/fclPidtdLcFNtKOvPZ8HH0kvueNJPbLfVF+9REkSjPe+yeNkZoGE9/fakjVYizQeNPcQK6KoHOesXkNULKQbz689CfTHflm5PpugVXGVLDtJ4xxP/gbE4EB2GKJvqTbG4qJ11OPCugaaq0H2yl9pjVQIhgcjkHZ+2elPEDwpY7naIukBpTqkE303IQtDisHeR9ordNiXBNWIUy01zFMsOaeLLo63BTSXUBrzxaNr3QwPdE4TtyioiI5/LTv7mMBdhFMcgS6nvFylEhnyQzl3d+G2zZIoYUA",
+    "response": ""
+  },
+  "response_headers": {
+    "access-control-allow-origin": "*",
+    "content-length": "890",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 18:00:56 GMT",
+    "via": "1.1 a1b9623058220e111430672a0ebed6ea.cloudfront.net (CloudFront)",
+    "x-amz-apigw-id": "dug92HxGDoEEGgg=",
+    "x-amz-cf-id": "GMTFr3fH-QNUYYyep-dmakIEKuopMtiRkAlkNBqJbEa40mwQyUtOZA==",
+    "x-amz-cf-pop": "WAW51-P6",
+    "x-amzn-requestid": "82366f28-4643-47a3-a66e-0a77351d164e",
+    "x-amzn-trace-id": "Root=1-6a0f4858-7fb7aa950b2cecc63debbf78;Parent=316941042a6f7870;Sampled=0;Lineage=1:1fe24869:0",
+    "x-cache": "Miss from cloudfront"
+  },
+  "response_body": {
+    "token": "<redacted>"
+  },
+  "response_body_known": true,
+  "redactions": [
+    "response_body.token"
+  ]
+}

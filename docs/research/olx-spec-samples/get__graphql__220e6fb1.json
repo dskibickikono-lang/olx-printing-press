@@ -1,0 +1,57 @@
+{
+  "endpoint": "GET /graphql",
+  "method": "GET",
+  "raw_url": "https://jobs-api.olx.pl/graphql?operationName=CompanyProfileEmployerSegment&variables=%7B%22userUUID%22%3A%22dcac09dc-d86e-4722-892c-cf6e19f15fb7%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%228bdce7641716c9c2f727f054824f640c56de097f2cbb5aa552c695ef26b04831%22%7D%7D",
+  "status": 200,
+  "request_headers": {
+    ":authority": "jobs-api.olx.pl",
+    ":method": "GET",
+    ":path": "/graphql?operationName=CompanyProfileEmployerSegment&variables=%7B%22userUUID%22%3A%22dcac09dc-d86e-4722-892c-cf6e19f15fb7%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%228bdce7641716c9c2f727f054824f640c56de097f2cbb5aa552c695ef26b04831%22%7D%7D",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "content-type": "application/json",
+    "olx-locale": "pl-PL",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+  },
+  "request_body": null,
+  "response_headers": {
+    "access-control-allow-credentials": "true",
+    "access-control-allow-origin": "https://www.olx.pl",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "cache-control": "max-age=300, public",
+    "content-length": "184",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Thu, 21 May 2026 18:02:40 GMT",
+    "server": "CloudFront",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Origin",
+    "via": "1.1 c2922f7013da92f83ff7e6bb34db8be6.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "kuhLsD57wOH8KqGbk-749pRxWZ6XN57oy-Z3HWqMvEAk9u-IFWf18A==",
+    "x-amz-cf-pop": "ARN52-P1",
+    "x-cache": "Miss from cloudfront"
+  },
+  "response_body": {
+    "data": {
+      "CompanyProfile": {
+        "__typename": "CompanyProfileQuery",
+        "employerSegmentV2": {
+          "__typename": "EmployerSegmentResponse",
+          "id": "dcac09dc-d86e-4722-892c-cf6e19f15fb7",
+          "type": "small"
+        }
+      }
+    }
+  },
+  "response_body_known": true
+}

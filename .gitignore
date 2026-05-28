@@ -1,0 +1,37 @@
+# binaries
+bin/
+dist/
+build/
+
+# cache
+data/cache/
+*.cache
+
+# env
+.env
+.env.*
+
+# logs
+*.log
+
+# temp
+tmp/
+temp/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Go
+vendor/
+
+# MCP runtime
+*.sock
+*.pid
+
+# HAR secrets
+*.har.bak
+

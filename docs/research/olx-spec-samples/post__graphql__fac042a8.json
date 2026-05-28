@@ -1,0 +1,57 @@
+{
+  "endpoint": "POST /graphql",
+  "method": "POST",
+  "raw_url": "https://production-graphql.eu-sharedservices.olxcdn.com/graphql",
+  "status": 200,
+  "request_headers": {
+    ":authority": "production-graphql.eu-sharedservices.olxcdn.com",
+    ":method": "POST",
+    ":path": "/graphql",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "pl",
+    "content-length": "180",
+    "content-type": "application/json",
+    "origin": "https://www.olx.pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "site": "olxpl",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "x-client": "DESKTOP"
+  },
+  "request_body": {
+    "operationName": "PageViews",
+    "query": "query PageViews($adId: String!) {\n  myAds {\n    pageViews(adId: $adId) {\n      pageViews\n    }\n  }\n}",
+    "variables": {
+      "adId": "1049372536"
+    }
+  },
+  "response_headers": {
+    "access-control-allow-origin": "*",
+    "cache-control": "no-store",
+    "content-length": "51",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Thu, 21 May 2026 18:02:48 GMT",
+    "via": "1.1 3b94d7a16ccc58f1a6ce634d854f014e.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "3kC8chzd5vma80pHNGKcyOCgmSVxytM5BV0kRT8RJVCWB5ogsR2rUw==",
+    "x-amz-cf-pop": "WAW51-P1",
+    "x-cache": "Miss from cloudfront"
+  },
+  "response_body": {
+    "data": {
+      "myAds": {
+        "pageViews": {
+          "pageViews": 620
+        }
+      }
+    }
+  },
+  "response_body_known": true
+}

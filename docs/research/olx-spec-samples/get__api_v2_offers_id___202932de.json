@@ -1,0 +1,231 @@
+{
+  "endpoint": "GET /api/v2/offers/{id}/",
+  "method": "GET",
+  "raw_url": "https://www.olx.pl/api/v2/offers/1049372536/",
+  "status": 200,
+  "request_headers": {
+    ":authority": "www.olx.pl",
+    ":method": "GET",
+    ":path": "/api/v2/offers/1049372536/",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "pl",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/oferta/praca/operator-operatorka-produkcji-giecie-k-m-n-CID4-ID1913Ju.html?search_reason=search%7Corganic",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "version": "v1.19",
+    "x-client": "DESKTOP",
+    "x-device-id": "1b5d8dae-6d06-43c1-b24d-738f5b4644a0",
+    "x-fingerprint": "fbdc4f53959cdb4af47c1cffae5cc2e35c6324e638a283d8d11dae88fc3236ac3fef60c9cf99daeee8380ebb100f22a6faed307981c3a6ca4e1f7a2acddfea3321f2c817b2cc220c3fef60c9cf99daee3fef60c9cf99daee4e1f7a2acddfea33b497a357830277b800d2d70001a8f455308e012c59cf7bdd93ba89d2bc096e295c6324e638a283d85a1778be62509b00e8380ebb100f22a66452dcce37bc7a72e2dd2fa9fb4257646edcefe65587f9d212ef91844389788652921f5f9cea558ad4cd2dc56075a1f2d6732ea217e771924e1f7a2acddfea33e8380ebb100f22a65c6324e638a283d8faed307981c3a6ca85dd7ae142a6c1c7345bf81ff62a2ec4edb80d5780ab2861e707abe489749430bccb3ff9c592977647cb9fdfa4136f51e0a8d9bd2152e9e06df5e1f064573a111124304c5a37d509d5e3a2df978cc98281c4694103397b84007c3963de1362e7d8b7668586e5befd9a7cce06fbd6049945ec0f1d83431de81fa7f0020eee7e44d5e3a2df978cc9824a4dc57f0eecaa4b30b16804a9e21876",
+    "x-platform-type": "mobile-html5"
+  },
+  "request_body": null,
+  "response_headers": {
+    "cache-control": "no-store",
+    "content-encoding": "gzip",
+    "content-security-policy": "default-src * 'unsafe-eval' 'unsafe-inline' data:; frame-ancestors 'self' app.optimizely.com apps.facebook.com fonts.googleapis.com; media-src * blob:",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Thu, 21 May 2026 18:02:39 GMT",
+    "expires": "Thu, 19 Nov 1981 08:52:00 GMT",
+    "pragma": "no-cache",
+    "referrer-policy": "unsafe-url",
+    "server": "nginx",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "vary": "Accept-Encoding",
+    "via": "1.1 bf8300a72b6d0584e2f6b1df22e3f548.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "QDRe19uAZ1e-xi4pYFqVgbRUKBXnHzv1Ss9gxPhu7Sln6Nmnf2RvQA==",
+    "x-amz-cf-pop": "WAW51-P3",
+    "x-cache": "Miss from cloudfront",
+    "x-content-type-options": "nosniff",
+    "x-request-id": "QDRe19uAZ1e-xi4pYFqVgbRUKBXnHzv1Ss9gxPhu7Sln6Nmnf2RvQA==",
+    "x-xss-protection": "1"
+  },
+  "response_body": {
+    "data": {
+      "business": true,
+      "category": {
+        "id": 1754,
+        "type": "job"
+      },
+      "contact": {
+        "chat": true,
+        "courier": false,
+        "name": "Dział HR",
+        "negotiation": false,
+        "phone": true
+      },
+      "created_time": "2026-01-14T08:48:52+01:00",
+      "delivery": {
+        "rock": {
+          "active": false,
+          "mode": "NotEligible",
+          "offer_id": null
+        }
+      },
+      "description": "<p><strong>GE Aerospace jest amerykańską grupą z branży lotniczej działającą na całym świecie, a nasz zakład produkcyjny Unison Engine Components Poland w Dzierżoniowie stanowi ważną część tej grupy. Zajmujemy się produkcją elementów do silników samolotowych. Kultura organizacyjna grupy GE Aerospace skupiona jest na bezpieczeństwie Pracowników, wspólnie tworzonej jakości, dbałości o koszty oraz czas dostawy. Każdego dnia z dumą pracujemy jako jeden zespół, aby realizować cele biznesowe oraz wspierać naszych Pracowników w ich rozwoju. Aktualnie do naszego zespołu poszukujemy osoby na stanowisko:</strong></p><p><strong>Operator/ Operatorka Produkcji – Gięcie (k/m/n)</strong></p><p><strong>Miejsce pracy: Dzierżoniów</strong></p><p><strong> </strong></p><p><strong>Co będzie należało do Twoich zadań:</strong></p><ul><li><p>Obsługa maszyn produkcyjnych – giętarki sterowane numerycznie Crippa.</p></li><li><p>Obsługa maszyn: tnących, do obróbki metalu oraz myjki.</p></li><li><p>Przygotowanie elementów do spawania.</p></li><li><p>Dbanie o narzędzia pracy.</p></li><li><p>Pobieranie materiału.</p></li><li><p>Kontrola jakości wykonywanych produktów.</p></li><li><p>Przestrzeganie norm i procedur jakościowych.</p></li><li><p>Wypełnianie dokumentacji oraz raportowanie pracy w systemie.</p></li><li><p>Współpraca z innymi działami w Firmie.</p></li></ul><p> <strong>Czego oczekujemy:</strong></p><ul><li><p>Doświadczenie w pracy na podobnym stanowisku: w gięciu rur, profili, blach bądź innych elementów metalowych, szlifowaniu manualnym, cięciu piłą - mile widziane.</p></li><li><p>Duże zdolności manualne.</p></li><li><p>Umiejętność posługiwania się narzędziami pomiarowymi typu suwmiarka, taśma miernicza, kątomierz.</p></li><li><p>Duże zdolności manualne.</p></li><li><p>Wykształcenie techniczne preferowane obróbka skrawaniem bądź doświadczenie w obróbce metalu - mile widziane.</p></li><li><p>Dokładność, precyzja i sumienność podczas wykonywania pracy.</p></li><li><p>Samodzielność i dobra organizacja pracy.</p></li><li><p>Umiejętność pracy w zespole, zaangażowanie.</p></li><li><p>Przestrzeganie zasad bezpieczeństwa i higieny pracy.</p></li><li><p>Gotowość do pracy zmianowej.</p><p></p></li></ul><p><strong>Co oferujemy:</strong></p><ul><li><p>Stabilne zatrudnienie w firmie produkcyjnej z branży lotniczej i brak monotonii w pracy.</p></li><li><p>Możliwości realnego rozwoju zawodowego w międzynarodowym środowisku grupy GE Aerospace.</p></li><li><p>Kompleksowy program szkolenia stanowiskowego i wdrożenia w zadania.</p></li><li><p>Atrakcyjny system premiowania oraz bogaty pakiet benefitów obejmujący m.in. Pracowniczy Program Emerytalny (składka sponsorowana przez firmę to 3,5%), karta Multisport Plus oraz Fundusz Socjalny ZFŚS (m.in. świadczenie świąteczne, wczasy pod gruszą).</p></li><li><p>Ubezpieczenie na życie Generali oraz prywatną opiekę medyczną Medicover – dajemy możliwość objęcia opieką medyczną i ubezpieczeniem na życie również partnera_kę.</p></li><li><p>Prace w otwartej kulturze, opartej na współpracy, wzajemnym szacunki i zaufaniu.</p></li><li><p>Pracę w systemie zmianowym od poniedziałku do piątku.</p></li><li><p>Inicjatywy promujące zdrowy tryb życia oraz programy poprawiające samopoczucie i komfort np. badania profilaktyczne dla wszystkich pracowników, zdrowe przekąski, świeże owoce.</p></li></ul><p> </p><p><strong><em>Prosimy o zawarcie następującego zdania w swoim dokumencie aplikacyjnym (CV):</em></strong></p><p><em>„Na podstawie art. 6 ust. 1 lit. a Rozporządzenia Parlamentu Europejskiego i Rady (UE) nr 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (Dz. Urz. UE L119 z 4 maja 2016 r., str. 1), wyrażam zgodę na przetwarzanie moich danych osobowych przez Unison Engine Components Poland Sp. z o.o. z siedzibą w Dzierżoniowie 58-200, ul. Nowowiejska 50A w celach związanych z prowadzeniem aktualnego procesu rekrutacyjnego. Oświadczam, że przed wyrażeniem niniejszej zgody na przetwarzanie danych osobowych zostałem poinformowany o prawie do jej wycofania w dowolnym momencie”.</em></p><p><em>Nasza organizacja zapewnia bezpieczne i poufne kanały zgłaszania nieprawidłowości, zgodnie z obowiązującymi przepisami prawa. Kandydaci mogą zgłaszać wszelkie naruszenia prawa, norm etycznych lub wewnętrznych zasad firmy. Więcej informacji można znaleźć www.geaerospace.com/investor-relations/governance.</em></p>",
+      "id": 1049372536,
+      "isGpsrAvailable": true,
+      "key_params": [],
+      "last_refresh_time": "2026-05-20T10:39:03+02:00",
+      "location": {
+        "city": {
+          "id": 26541,
+          "name": "Dzierżoniów",
+          "normalized_name": "dzierzoniow"
+        },
+        "region": {
+          "id": 3,
+          "name": "Dolnośląskie",
+          "normalized_name": "dolnoslaskie"
+        }
+      },
+      "map": {
+        "lat": 50.7308605,
+        "lon": 16.6567892,
+        "radius": 5,
+        "show_detailed": false,
+        "zoom": 12
+      },
+      "offer_type": "offer",
+      "omnibus_pushup_time": "2026-05-20T10:39:03+02:00",
+      "params": [
+        {
+          "key": "type",
+          "name": "Wymiar pracy",
+          "type": "select",
+          "value": {
+            "key": "fulltime",
+            "label": "Pełny etat"
+          }
+        },
+        {
+          "key": "agreement",
+          "name": "Typ umowy",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "part"
+            ],
+            "label": "Umowa o pracę"
+          }
+        },
+        {
+          "key": "experience",
+          "name": "Wymagane doświadczenie",
+          "type": "select",
+          "value": {
+            "key": "exp_yes",
+            "label": "Wymagane doświadczenie"
+          }
+        },
+        {
+          "key": "availability",
+          "name": "Dyspozycyjność",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "shift_work"
+            ],
+            "label": "Praca zmianowa"
+          }
+        },
+        {
+          "key": "workplace",
+          "name": "Miejsce pracy",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "on_site"
+            ],
+            "label": "W siedzibie firmy"
+          }
+        },
+        {
+          "key": "manager",
+          "name": "Kadra kierownicza",
+          "type": "checkbox",
+          "value": {
+            "key": "0",
+            "label": null
+          }
+        },
+        {
+          "key": "remote_recruitment",
+          "name": "Rekrutacja online",
+          "type": "checkbox",
+          "value": {
+            "key": "0",
+            "label": null
+          }
+        },
+        {
+          "key": "senior_friendly",
+          "name": "Zapraszamy seniorów",
+          "type": "checkbox",
+          "value": {
+            "key": "0",
+            "label": null
+          }
+        }
+      ],
+      "partner": null,
+      "photos": [],
+      "promotion": {
+        "b2c_ad_page": true,
+        "highlighted": false,
+        "options": [],
+        "premium_ad_page": true,
+        "top_ad": false,
+        "urgent": false
+      },
+      "protect_phone": false,
+      "pushup_time": "2026-05-20T10:39:03+02:00",
+      "safedeal": {
+        "allowed_quantity": [],
+        "safedeal_blocked": false,
+        "status": "unactive",
+        "weight": 0,
+        "weight_grams": 0
+      },
+      "shop": {
+        "subdomain": "geaviationunison"
+      },
+      "status": "active",
+      "title": "Operator / Operatorka Produkcji - Gięcie (k/m/n)",
+      "url": "https://www.olx.pl/oferta/praca/operator-operatorka-produkcji-giecie-k-m-n-CID4-ID1913Ju.html",
+      "user": {
+        "about": "GE Aviation jest amerykańską grupą z branży lotniczej działającą na całym świecie, a nasz zakład produkcyjny Unison Engine Components Poland w Dzierżoniowie stanowi ważną część tej grupy. \r\n\r\nZajmujemy się produkcją elementów do silników samolotowych.\r\n\r\nKultura organizacyjna grupy GE skupiona jest na bezpieczeństwie Pracowników, wspólnie tworzonej jakości, dbałości o koszty oraz czas dostawy. Każdego dnia pracujemy jako jeden zespół, aby realizować cele biznesowe oraz wspierać naszych Pracowników w ich rozwoju.",
+        "b2c_business_page": true,
+        "banner_desktop": "https://img-resizer.prd.01.eu-west-1.eu.olx.org/img-eu-olxpl-production/1188258721_1_1366x210_rev001.jpg",
+        "banner_mobile": "https://img-resizer.prd.01.eu-west-1.eu.olx.org/img-eu-olxpl-production/1175532389_1_0x0_rev002.jpg",
+        "company_name": "GE Aviation UNISON ENGINE COMPONENTS POLAND Sp. z o. o.",
+        "created": "2021-11-09T10:07:27+01:00",
+        "id": 1046094211,
+        "is_online": false,
+        "last_seen": "2026-05-06T10:30:44+02:00",
+        "logo": "https://img-resizer.prd.01.eu-west-1.eu.olx.org/img-eu-olxpl-production/1175532389_1_261x203_rev002.jpg",
+        "logo_ad_page": "https://img-resizer.prd.01.eu-west-1.eu.olx.org/img-eu-olxpl-production/1175532389_1_261x203_rev002.jpg",
+        "name": "Dział HR",
+        "other_ads_enabled": true,
+        "photo": null,
+        "seller_type": null,
+        "social_network_account_type": null,
+        "uuid": "dcac09dc-d86e-4722-892c-cf6e19f15fb7"
+      },
+      "valid_to_time": "2026-06-05T10:39:00+02:00"
+    },
+    "links": {
+      "self": {
+        "href": "https://www.olx.pl/api/v1/offers/1049372536"
+      }
+    }
+  },
+  "response_body_known": true
+}

@@ -1,0 +1,707 @@
+{
+  "endpoint": "GET /sfc/api/v1/categories/config",
+  "method": "GET",
+  "raw_url": "https://www.olx.pl/sfc/api/v1/categories/config?platform=desktop",
+  "status": 200,
+  "request_headers": {
+    ":authority": "www.olx.pl",
+    ":method": "GET",
+    ":path": "/sfc/api/v1/categories/config?platform=desktop",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "content-type": "application/json",
+    "olx-locale": "pl-PL",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/praca/produkcja/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+  },
+  "request_body": null,
+  "response_headers": {
+    "age": "563",
+    "apigw-requestid": "dufZCjXpjoEEJVQ=",
+    "cache-control": "max-age=900",
+    "content-encoding": "gzip",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 17:50:11 GMT",
+    "vary": "Accept-Encoding",
+    "via": "1.1 bf8300a72b6d0584e2f6b1df22e3f548.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "7udiQZpg7DzpGibD1ydLMkYyFvJGdc7_orXzHwHhDu0W9RafeZhpMQ==",
+    "x-amz-cf-pop": "WAW51-P3",
+    "x-cache": "Hit from cloudfront"
+  },
+  "response_body": {
+    "categories": {
+      "1816": [
+        "CUSTOMIZED_LOCATION_ysAtM",
+        "BOOKING_CALENDAR_POAYw"
+      ],
+      "3018": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3021": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3022": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3023": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3024": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3025": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3026": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3027": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3028": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3029": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3030": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3484": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3485": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3486": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3487": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3488": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3489": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3490": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3491": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3492": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3493": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3494": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3495": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3496": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3497": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3498": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3499": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3500": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3501": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3502": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3503": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3504": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3505": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3506": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3895": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "3896": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "4371": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4372": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_iNOvi",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4373": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4374": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4375": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4376": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4377": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4378": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4379": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4380": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4381": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4382": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4383": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4384": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4385": [
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4386": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4387": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4388": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4389": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4390": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4391": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_iNOvi",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4392": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4393": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4394": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4395": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4396": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4397": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4398": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4399": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4400": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4401": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4402": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4403": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4404": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4405": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_iNOvi",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4406": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4407": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4408": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4409": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4410": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4411": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4412": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4413": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4414": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4415": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4416": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4417": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4418": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4419": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_iNOvi",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4420": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4421": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4422": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4423": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4424": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4425": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4426": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4427": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4428": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4429": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4430": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4431": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4432": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4433": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_iNOvi",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4434": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4435": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4436": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4437": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4438": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4439": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4440": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4441": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4442": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4444": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4445": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4446": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_iNOvi",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4447": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4448": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4449": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4450": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4451": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4452": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4453": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4454": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4455": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4456": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4457": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_iNOvi",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4458": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4459": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4460": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4461": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4462": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4463": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4464": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4465": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4466": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4467": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4468": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4469": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4470": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4471": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4472": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4473": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4474": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4475": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4476": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4477": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4478": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4479": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4480": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR",
+        "SPECIALIZATIONS_PROMO_GVVQV"
+      ],
+      "4481": [
+        "BUSINESS_CARD_koNtK",
+        "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR"
+      ],
+      "4512": [
+        "BOOKING_CALENDAR_POAYw"
+      ],
+      "4513": [
+        "CUSTOMIZED_LOCATION_ysAtM",
+        "BOOKING_CALENDAR_POAYw"
+      ],
+      "4515": [
+        "BOOKING_CALENDAR_tLJdb"
+      ],
+      "4636": [
+        "CUSTOMIZED_LOCATION_ysAtM",
+        "BOOKING_CALENDAR_POAYw"
+      ],
+      "4637": [
+        "CUSTOMIZED_LOCATION_ysAtM",
+        "BOOKING_CALENDAR_POAYw"
+      ]
+    },
+    "features": {
+      "BOOKING_CALENDAR_POAYw": {
+        "featureScope": [
+          "OFFER"
+        ],
+        "featureType": "BOOKING_CALENDAR",
+        "guestsEnabled": true,
+        "type": "AVAILABILITY_CALENDAR",
+        "unit": "NIGHTS"
+      },
+      "BOOKING_CALENDAR_tLJdb": {
+        "featureScope": [
+          "OFFER"
+        ],
+        "featureType": "BOOKING_CALENDAR",
+        "guestsEnabled": false,
+        "type": "AVAILABILITY_CALENDAR",
+        "unit": "DAYS"
+      },
+      "BUSINESS_CARD_koNtK": {
+        "featureScope": [
+          "USER",
+          "OFFER"
+        ],
+        "featureType": "BUSINESS_CARD",
+        "published": false
+      },
+      "CUSTOMIZED_LOCATION_ysAtM": {
+        "featureScope": [
+          "OFFER"
+        ],
+        "featureType": "CUSTOMIZED_LOCATION"
+      },
+      "HELP_REQUESTS_SEEKER_LISTING_BANNER_kKFuR": {
+        "featureScope": [
+          "OFFER"
+        ],
+        "featureType": "HELP_REQUESTS_SEEKER_LISTING_BANNER",
+        "onlyCity": {
+          "id": 17871,
+          "name": "Warszawa"
+        }
+      },
+      "HELP_REQUESTS_iNOvi": {
+        "featureScope": [
+          "USER",
+          "OFFER"
+        ],
+        "featureType": "HELP_REQUESTS",
+        "onlyCity": {
+          "id": 17871,
+          "name": "Warszawa"
+        },
+        "spOnboarding": true
+      },
+      "SPECIALIZATIONS_PROMO_GVVQV": {
+        "featureScope": [
+          "OFFER"
+        ],
+        "featureType": "SPECIALIZATIONS_PROMO"
+      }
+    },
+    "platform": "desktop"
+  },
+  "response_body_known": true
+}

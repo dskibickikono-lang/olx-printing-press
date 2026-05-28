@@ -1,0 +1,366 @@
+{
+  "endpoint": "GET /data/olx/cookies.json",
+  "method": "GET",
+  "raw_url": "https://eprivacy-storage.eu-sharedservices.olxcdn.com/data/olx/cookies.json",
+  "status": 200,
+  "request_headers": {
+    "Referer": "https://www.olx.pl/",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\""
+  },
+  "request_body": null,
+  "response_headers": {
+    "access-control-allow-origin": "*",
+    "age": "285",
+    "cache-control": "max-age=300",
+    "content-encoding": "br",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 17:54:25 GMT",
+    "etag": "W/\"7e86a36629cb3a98e2f570084462a61b\"",
+    "last-modified": "Mon, 18 May 2026 09:27:32 GMT",
+    "server": "AmazonS3",
+    "vary": "Origin,Access-Control-Request-Headers,Access-Control-Request-Method,Accept-Encoding",
+    "via": "1.1 53bf0cff7786ab4189de275f76a50578.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "BFLl12qOTngLHZ3sGeSTvZLsTN8uzMKGT1TDpON7Dz90PGebPwDKxw==",
+    "x-amz-cf-pop": "WAW51-P3",
+    "x-amz-server-side-encryption": "AES256",
+    "x-cache": "Hit from cloudfront"
+  },
+  "response_body": {
+    "AccessToken": "<redacted>",
+    "AuthState": [
+      "C0001"
+    ],
+    "G_ENABLED_IDPS": [
+      "C0003"
+    ],
+    "IDPState": [
+      "C0001"
+    ],
+    "IdToken": [
+      "C0001"
+    ],
+    "LogoutState": [
+      "C0001"
+    ],
+    "OTAdditionalConsentString": [
+      "C0001"
+    ],
+    "OptanonAlertBoxClosed": [
+      "C0001"
+    ],
+    "OptanonConsent": [
+      "C0001"
+    ],
+    "PHPSESSID": [
+      "C0001"
+    ],
+    "RefreshToken": "<redacted>",
+    "SID": [
+      "C0001"
+    ],
+    "TPM-1282": [
+      "C0001"
+    ],
+    "__cf_bm": [
+      "C0001"
+    ],
+    "__user_id_P&S": [
+      "C0001"
+    ],
+    "_cookie_test": [
+      "C0002"
+    ],
+    "_csrf": [
+      "C0001"
+    ],
+    "_legacy_a0.spajs.txs.${25}": [
+      "C0001"
+    ],
+    "_legacy_a0.spajs.txs.${26}": [
+      "C0001"
+    ],
+    "_legacy_a0.spajs.txs.${32}": [
+      "C0001"
+    ],
+    "_legacy_auth0.${25}.is.authenticated": [
+      "C0001"
+    ],
+    "_legacy_auth0.${26}.is.authenticated": [
+      "C0001"
+    ],
+    "_legacy_auth0.${32}.is.authenticated": [
+      "C0001"
+    ],
+    "a0.spajs.txs.${25}": [
+      "C0001"
+    ],
+    "a0.spajs.txs.${26}": [
+      "C0001"
+    ],
+    "a0.spajs.txs.${32}": [
+      "C0001"
+    ],
+    "a_access_token": [
+      "C0001"
+    ],
+    "a_grant_type": [
+      "C0001"
+    ],
+    "a_refresh_token": [
+      "C0001"
+    ],
+    "access_token": "<redacted>",
+    "aib_dc": [
+      "C0001"
+    ],
+    "aib_ls": [
+      "C0001"
+    ],
+    "ap_state": [
+      "C0001"
+    ],
+    "apollo-tk": [
+      "C0001"
+    ],
+    "auth0.${25}.is.authenticated": [
+      "C0001"
+    ],
+    "auth0.${26}.is.authenticated": [
+      "C0001"
+    ],
+    "auth0.${32}.is.authenticated": [
+      "C0001"
+    ],
+    "auth_state": [
+      "C0001"
+    ],
+    "auto-extension-info-seen": [
+      "C0003"
+    ],
+    "aws-waf-token": [
+      "C0001"
+    ],
+    "boost-banner-id": [
+      "C0003"
+    ],
+    "candidate_profile_dashboard_summary_tooltip_seen": [
+      "C0001"
+    ],
+    "candidate_profile_preferences_summary_tooltip_seen": [
+      "C0001"
+    ],
+    "cookieBarSeen": [
+      "C0001"
+    ],
+    "cookieBarSeenV2": [
+      "C0001"
+    ],
+    "cookietest": [
+      "C0002"
+    ],
+    "datadome": [
+      "C0001"
+    ],
+    "deviceGUID": [
+      "C0001"
+    ],
+    "discount_msg_shown_${32}": [
+      "C0003"
+    ],
+    "dog-fed-today": [
+      "C0003"
+    ],
+    "euconsent": [
+      "C0001"
+    ],
+    "euconsent-v2": [
+      "C0001"
+    ],
+    "eupubconsent": [
+      "C0001"
+    ],
+    "eupubconsent-v2": [
+      "C0001"
+    ],
+    "fdbs": [
+      "C0003"
+    ],
+    "fingerprint": [
+      "C0001"
+    ],
+    "google-rating-banner-closed": [
+      "C0003"
+    ],
+    "google-rating-banner-limit": [
+      "C0003"
+    ],
+    "grant_type": [
+      "C0001"
+    ],
+    "hideBottomBar": [
+      "C0001"
+    ],
+    "if_look_for_popular": [
+      "C0003"
+    ],
+    "invite": [
+      "C0002"
+    ],
+    "lang": [
+      "C0003"
+    ],
+    "laquesis": [
+      "C0001"
+    ],
+    "laquesis_result": [
+      "C0001"
+    ],
+    "laquesisff": [
+      "C0001"
+    ],
+    "laquesissu": [
+      "C0001"
+    ],
+    "last_locations": [
+      "C0003"
+    ],
+    "ldTd": [
+      "C0002"
+    ],
+    "ldctx": [
+      "C0002"
+    ],
+    "ldff": [
+      "C0002"
+    ],
+    "locationModalSeen": [
+      "C0003"
+    ],
+    "loginPromptSeenVB": [
+      "C0003"
+    ],
+    "lq-devbar": [
+      "C0003"
+    ],
+    "lqonap": [
+      "C0001"
+    ],
+    "lqstatus": [
+      "C0001"
+    ],
+    "mobile_default": [
+      "C0001"
+    ],
+    "mp-seller-cid": [
+      "C0001"
+    ],
+    "my_city_2": [
+      "C0003"
+    ],
+    "newrelicInited": [
+      "C0001"
+    ],
+    "nsr": [
+      "C0001"
+    ],
+    "observed5_view": [
+      "C0003"
+    ],
+    "observed_aui": [
+      "C0001"
+    ],
+    "observed_id": [
+      "C0003"
+    ],
+    "onap": [
+      "C0001"
+    ],
+    "onap_dev": [
+      "C0001"
+    ],
+    "one_trust_scanner": [
+      "C0001"
+    ],
+    "paid_limit_modal_seen": [
+      "C0003"
+    ],
+    "part-compatibility-tour": [
+      "C0003"
+    ],
+    "postpaid_modal_seen": [
+      "C0003"
+    ],
+    "promote-banner-id": [
+      "C0003"
+    ],
+    "ps-purchase-hash": [
+      "C0001"
+    ],
+    "refresh_token": "<redacted>",
+    "ro_rock_ff": [
+      "C0001"
+    ],
+    "salary-recommendation-${14}": [
+      "C0003"
+    ],
+    "session_start_date": [
+      "C0002"
+    ],
+    "surveyPopupInited": [
+      "C0003"
+    ],
+    "test": [
+      "C0001"
+    ],
+    "thememode": [
+      "C0003"
+    ],
+    "token": "<redacted>",
+    "token_<uuid>": [
+      "C0001"
+    ],
+    "user_business_status": [
+      "C0002"
+    ],
+    "user_id": [
+      "C0002",
+      "C0004"
+    ],
+    "user_id_recs": [
+      "C0003"
+    ],
+    "user_pref_lang": [
+      "C0003"
+    ],
+    "user_uuid": [
+      "C0002",
+      "C0004"
+    ],
+    "value_tiered_pricing_onboarding_purchase_seen": [
+      "C0003"
+    ],
+    "value_tiered_pricing_onboarding_seen": [
+      "C0003"
+    ],
+    "vas-suggester-${14}": [
+      "C0003"
+    ],
+    "vasLogoExplanationDialogShowCount": [
+      "C0003"
+    ],
+    "x-device-id": [
+      "C0001"
+    ]
+  },
+  "response_body_known": true,
+  "redactions": [
+    "response_body.AccessToken",
+    "response_body.RefreshToken",
+    "response_body.access_token",
+    "response_body.refresh_token",
+    "response_body.token"
+  ]
+}

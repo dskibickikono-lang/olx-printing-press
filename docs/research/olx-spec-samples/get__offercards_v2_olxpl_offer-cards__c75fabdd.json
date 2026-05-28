@@ -1,0 +1,73 @@
+{
+  "endpoint": "GET /offercards/v2/olxpl/offer-cards",
+  "method": "GET",
+  "raw_url": "https://ireland.apigateway.olxgroup.com/offercards/v2/olxpl/offer-cards?id=1040580172&id=1069784275",
+  "status": 200,
+  "request_headers": {
+    ":authority": "ireland.apigateway.olxgroup.com",
+    ":method": "GET",
+    ":path": "/offercards/v2/olxpl/offer-cards?id=1040580172&id=1069784275",
+    ":scheme": "https",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9,pl;q=0.8",
+    "cache-control": "no-cache",
+    "content-type": "application/json",
+    "origin": "https://www.olx.pl",
+    "pragma": "no-cache",
+    "priority": "u=1, i",
+    "referer": "https://www.olx.pl/",
+    "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+  },
+  "request_body": null,
+  "response_headers": {
+    "access-control-allow-credentials": "true",
+    "access-control-allow-origin": "https://www.olx.pl",
+    "age": "201",
+    "cache-control": "max-age=300",
+    "content-length": "180",
+    "content-type": "application/json",
+    "date": "Thu, 21 May 2026 17:55:49 GMT",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "server": "CloudFront",
+    "strict-transport-security": "max-age=31536000",
+    "via": "1.1 3356301f07067a98e2508f662ccd34d0.cloudfront.net (CloudFront)",
+    "x-amz-cf-id": "9csVAgYAjkK4xECr5YVwk8DFLLqlpSbW0A9LinkGHK5KkTBVQyD3EQ==",
+    "x-amz-cf-pop": "WAW51-P6",
+    "x-cache": "Hit from cloudfront",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "SAMEORIGIN",
+    "x-xss-protection": "1; mode=block"
+  },
+  "response_body": {
+    "data": [
+      {
+        "btr": {
+          "fee": {
+            "amount": 23.2,
+            "currency": "PLN"
+          },
+          "state": "ENABLED"
+        },
+        "id": "1040580172"
+      },
+      {
+        "btr": {
+          "fee": {
+            "amount": 6.97,
+            "currency": "PLN"
+          },
+          "state": "ENABLED"
+        },
+        "id": "1069784275"
+      }
+    ]
+  },
+  "response_body_known": true
+}
