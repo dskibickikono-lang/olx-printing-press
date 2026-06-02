@@ -62,7 +62,7 @@ Examples:
 }
 
 func runCompanies(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *companiesFlags) error {
-	st, err := openStore(ctx, root)
+	st, err := openStoreReadOnly(ctx, root)
 	if err != nil {
 		return err
 	}
@@ -206,7 +206,7 @@ func QueryCompanies(ctx context.Context, db *sql.DB, q CompaniesQuery) ([]Compan
 			COALESCE(c.phone, ''), COALESCE(c.email, ''),
 			jc.n, COALESCE(c.first_seen, ''), COALESCE(c.last_seen, '')
 		FROM job_counts jc
-		LEFT JOIN companies c ON c.id = jc.cid
+		LEFT JOIN companies c ON c.id = jc.cid OR ('olx:' || c.id) = jc.cid OR c.id = ('olx:' || jc.cid)
 		ORDER BY jc.n DESC, c.name ASC
 		LIMIT ?`
 		args = append(jobArgs, min, limit)

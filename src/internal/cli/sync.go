@@ -4,6 +4,7 @@ package cli
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -42,6 +43,7 @@ type syncFlags struct {
 	includePhones   bool
 	includeEmployer bool
 	fetchDetail     bool
+	phonesCooldown  int
 }
 
 func newSyncCmd(root *rootFlags) *cobra.Command {
@@ -68,6 +70,7 @@ Examples:
 	cmd.Flags().BoolVar(&f.includePhones, "include-phones", false, "Fetch limited-phones for new offers (rate-limited by OLX)")
 	cmd.Flags().BoolVar(&f.includeEmployer, "include-employer", true, "Resolve seller profile via /api/v1/users/{id}/")
 	cmd.Flags().BoolVar(&f.fetchDetail, "fetch-detail", true, "Pull full offer description via /api/v2/offers/{id}/ (slower; needed for emails in description)")
+	cmd.Flags().IntVar(&f.phonesCooldown, "phones-cooldown", 24, "Hours to wait after a phones block before retrying limited-phones")
 	return cmd
 }
 
@@ -91,12 +94,31 @@ func runSync(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *syncFl
 
 	client := newOLXClient(root)
 
+	// Check if phones are currently blocked based on the previous sync run.
+	if f.includePhones {
+		var lastFinishedAt sql.NullString
+		err := st.DB().QueryRowContext(ctx, `
+			SELECT finished_at FROM sync_runs
+			WHERE phones_blocked = 1 AND finished_at IS NOT NULL
+			ORDER BY finished_at DESC LIMIT 1
+		`).Scan(&lastFinishedAt)
+		if err == nil && lastFinishedAt.Valid && lastFinishedAt.String != "" {
+			if parsed, ok := store.ParseStoredTime(lastFinishedAt.String); ok && !parsed.IsZero() {
+				if time.Since(parsed) < time.Duration(f.phonesCooldown)*time.Hour {
+					client.PhonesBlockedStoreTrue()
+					fmt.Fprintf(cmd.ErrOrStderr(), "note: phones are still blocked from a previous run (ends in %v). Skipping limited-phones fetches.\n", time.Duration(f.phonesCooldown)*time.Hour-time.Since(parsed))
+				}
+			}
+		}
+	}
+
 	runID, err := st.BeginSyncRun(ctx, joinInts(cats))
 	if err != nil {
 		return fmt.Errorf("begin sync run: %w", err)
 	}
 	stats := store.SyncRun{ID: runID}
 	defer func() {
+		stats.PhonesBlocked = client.PhonesBlocked()
 		if ferr := st.FinishSyncRun(ctx, stats); ferr != nil {
 			fmt.Fprintf(cmd.ErrOrStderr(), "warning: finish sync run: %v\n", ferr)
 		}
@@ -168,22 +190,32 @@ func upsertListing(ctx context.Context, cmd progressSink, st *store.Store, clien
 		return fmt.Errorf("offer with empty id")
 	}
 
+	prefixedOfferID := "olx:" + offerID
 	candidateRefresh := parseTime(lst.LastRefreshTime)
-	fresh, err := st.JobIsFresh(ctx, offerID, candidateRefresh)
+	// Check if job exists using both IDs for backward compatibility during the transition
+	fresh, err := st.JobIsFresh(ctx, prefixedOfferID, candidateRefresh)
 	if err != nil {
 		return err
 	}
+	if !fresh {
+		fresh, err = st.JobIsFresh(ctx, offerID, candidateRefresh)
+		if err != nil {
+			return err
+		}
+	}
 
 	// Decide if we need the full detail.
-	var detail *olx.OfferDetail
 	var detailRaw json.RawMessage
 	description := lst.Description
+	detailFetched := false
+	var fetchError string
 	if !fresh && f.fetchDetail {
 		d, raw, derr := client.GetOffer(ctx, offerID)
 		if derr != nil {
 			fmt.Fprintf(cmd.ErrOrStderr(), "warn: GetOffer(%s): %v\n", offerID, derr)
+			fetchError = fmt.Sprintf("GetOffer: %v", derr)
 		} else {
-			detail = d
+			detailFetched = true
 			detailRaw = raw
 			if d.Description != "" {
 				description = d.Description
@@ -200,29 +232,40 @@ func upsertListing(ctx context.Context, cmd progressSink, st *store.Store, clien
 	}
 
 	// Company upsert first so the FK on jobs.company_id resolves.
-	companyID := lst.User.ID.String()
+	companyID := lst.User.UUID
 	if companyID == "" {
-		companyID = lst.User.UUID
+		companyID = lst.User.ID.String()
 	}
+	prefixedCompanyID := ""
+	employerFetched := false
+	var c store.Company
 	if companyID != "" {
-		if isNewCompany(ctx, st, companyID) {
+		prefixedCompanyID = "olx:" + companyID
+		if isNewCompany(ctx, st, prefixedCompanyID) {
 			stats.CompaniesNew++
 		}
-		c := store.Company{
-			ID:         companyID,
-			Name:       firstNonEmpty(lst.User.CompanyName, lst.User.Name),
-			IsBusiness: lst.Business || lst.User.B2CBusinessPage,
-			City:       lst.Location.City.Name,
-			Region:     lst.Location.Region.Name,
-			FirstSeen:  now,
-			LastSeen:   now,
+		c = store.Company{
+			ID:          prefixedCompanyID,
+			Name:        firstNonEmpty(lst.User.CompanyName, lst.User.Name),
+			IsBusiness:  lst.Business || lst.User.B2CBusinessPage,
+			City:        lst.Location.City.Name,
+			Region:      lst.Location.Region.Name,
+			FirstSeen:   now,
+			LastSeen:    now,
+			OLXUserID:   lst.User.ID.String(),
+			OLXUserUUID: lst.User.UUID,
 		}
 		// Mine email from description as a best-effort signal.
 		if email := emailRE.FindString(description); email != "" {
 			c.Email = email
 		}
-		if f.includeEmployer && companyID != "" && !looksLikeUUID(companyID) {
-			if u, raw, uerr := client.GetUser(ctx, companyID); uerr == nil && u != nil {
+		userFetchID := lst.User.ID.String()
+		if userFetchID == "" {
+			userFetchID = lst.User.UUID
+		}
+		if f.includeEmployer && userFetchID != "" && !looksLikeUUID(userFetchID) {
+			if u, raw, uerr := client.GetUser(ctx, userFetchID); uerr == nil && u != nil {
+				employerFetched = true
 				if u.CompanyName != "" {
 					c.Name = u.CompanyName
 				}
@@ -231,10 +274,12 @@ func upsertListing(ctx context.Context, cmd progressSink, st *store.Store, clien
 						c.Email = email
 					}
 				}
+			} else if uerr != nil {
+				if fetchError != "" {
+					fetchError += "; "
+				}
+				fetchError += fmt.Sprintf("GetUser: %v", uerr)
 			}
-		}
-		if err := st.UpsertCompany(ctx, c); err != nil {
-			return fmt.Errorf("upsert company %s: %w", companyID, err)
 		}
 	}
 
@@ -243,63 +288,100 @@ func upsertListing(ctx context.Context, cmd progressSink, st *store.Store, clien
 	validTo := parseTime(lst.ValidToTime)
 	categoryID := lst.Category.ID.Int()
 
-	wasNew := !rowExists(ctx, st, "jobs", offerID)
+	wasNew := !rowExists(ctx, st, "jobs", prefixedOfferID) && !rowExists(ctx, st, "jobs", offerID)
 	job := store.Job{
-		ID:             offerID,
-		URL:            lst.URL,
-		Title:          lst.Title,
-		Description:    truncate(stripTags(description), 4000),
-		CategoryID:     categoryID,
-		CategoryPath:   "", // populated below if breadcrumbs available
-		LocationCity:   lst.Location.City.Name,
-		LocationRegion: lst.Location.Region.Name,
-		LocationLat:    lst.Map.Lat,
-		LocationLon:    lst.Map.Lon,
-		CompanyID:      companyID,
-		PostedAt:       postedAt,
-		RefreshedAt:    refreshedAt,
-		ValidTo:        validTo,
-		FetchedAt:      now,
-		Raw:            rawJSON,
-	}
-	if detail != nil {
-		// detail may carry richer fields, but currently we already use them above.
-		_ = detail
-	}
-	if err := st.UpsertJob(ctx, job); err != nil {
-		return fmt.Errorf("upsert job %s: %w", offerID, err)
-	}
-	if wasNew {
-		stats.JobsNew++
+		ID:              prefixedOfferID,
+		URL:             lst.URL,
+		Title:           lst.Title,
+		Description:     truncate(stripTags(description), 4000),
+		CategoryID:      categoryID,
+		CategoryPath:    "",
+		LocationCity:    lst.Location.City.Name,
+		LocationRegion:  lst.Location.Region.Name,
+		LocationLat:     lst.Map.Lat,
+		LocationLon:     lst.Map.Lon,
+		CompanyID:       prefixedCompanyID,
+		PostedAt:        postedAt,
+		RefreshedAt:     refreshedAt,
+		ValidTo:         validTo,
+		FetchedAt:       now,
+		Raw:             rawJSON,
+		DetailFetched:   detailFetched,
+		EmployerFetched: employerFetched,
+		FetchError:      fetchError,
 	}
 
+	// Extract category_path from rawJSON if breadcrumbs are available.
+	var rawData map[string]any
+	if err := json.Unmarshal(rawJSON, &rawData); err == nil {
+		if bc, ok := rawData["breadcrumbs"].([]any); ok {
+			var path []string
+			for _, item := range bc {
+				if m, ok := item.(map[string]any); ok {
+					if label, ok := m["label"].(string); ok {
+						path = append(path, label)
+					}
+				}
+			}
+			job.CategoryPath = strings.Join(path, " / ")
+		}
+	}
+
+	var phonesToSave []string
+	phonesAttempted := false
+	phonesBlocked := false
 	// Phones. Gate on the client's sticky block flag so we don't keep
 	// hammering /limited-phones/ after OLX's anti-abuse layer trips —
 	// repeated 400s only deepen the block and waste request budget.
-	if f.includePhones && lst.Contact.Phone && !fresh && !client.PhonesBlocked() {
-		phones, _, perr := client.GetPhones(ctx, offerID)
-		if perr != nil {
-			if errors.Is(perr, olx.ErrPhonesBlocked) {
-				// We only enter this branch on the request that *just*
-				// tripped the block (the upfront PhonesBlocked() guard
-				// suppresses later ones), so this logs exactly once
-				// per sync run.
-				fmt.Fprintf(cmd.ErrOrStderr(),
-					"warn: OLX anti-abuse system blocked limited-phones at offer %s; suppressing further phone fetches for this run\n",
-					offerID,
-				)
-			} else {
-				fmt.Fprintf(cmd.ErrOrStderr(), "warn: GetPhones(%s): %v\n", offerID, perr)
+	if f.includePhones && lst.Contact.Phone && !fresh {
+		if client.PhonesBlocked() {
+			phonesBlocked = true
+		} else {
+			phonesAttempted = true
+			phones, _, perr := client.GetPhones(ctx, offerID)
+			if perr != nil {
+				if errors.Is(perr, olx.ErrPhonesBlocked) {
+					// We only enter this branch on the request that *just*
+					// tripped the block (the upfront PhonesBlocked() guard
+					// suppresses later ones), so this logs exactly once
+					// per sync run.
+					fmt.Fprintf(cmd.ErrOrStderr(),
+						"warn: OLX anti-abuse system blocked limited-phones at offer %s; suppressing further phone fetches for this run\n",
+						offerID,
+					)
+					phonesBlocked = true
+				} else {
+					fmt.Fprintf(cmd.ErrOrStderr(), "warn: GetPhones(%s): %v\n", offerID, perr)
+					if fetchError != "" {
+						fetchError += "; "
+					}
+					fetchError += fmt.Sprintf("GetPhones: %v", perr)
+				}
 			}
-		}
-		for _, p := range phones {
-			if err := st.SavePhone(ctx, offerID, p, "limited-phones"); err != nil {
-				fmt.Fprintf(cmd.ErrOrStderr(), "warn: SavePhone(%s, %s): %v\n", offerID, p, err)
-				continue
-			}
-			stats.PhonesNew++
+			phonesToSave = append(phonesToSave, phones...)
 		}
 	}
+
+	job.PhonesAttempted = phonesAttempted
+	job.PhonesBlocked = phonesBlocked
+	job.FetchError = fetchError
+
+	if err := st.SaveOfferAtom(ctx, c, job, phonesToSave); err != nil {
+		// Log error, and potentially write the error as fetch_error to the job record.
+		// Note that to maintain atomicity and not break the run entirely, we log it.
+		// If saving failed, we'll try an isolated UpsertJob just to update the fetch_error.
+		job.FetchError = fmt.Sprintf("SaveOfferAtom: %v", err)
+		if errRetry := st.UpsertJob(ctx, job); errRetry != nil {
+			return fmt.Errorf("upsert job fallback %s: %w (original: %v)", prefixedOfferID, errRetry, err)
+		}
+		return fmt.Errorf("SaveOfferAtom failed for %s: %w", prefixedOfferID, err)
+	}
+
+	if wasNew {
+		stats.JobsNew++
+	}
+	stats.PhonesNew += len(phonesToSave)
+
 	return nil
 }
 

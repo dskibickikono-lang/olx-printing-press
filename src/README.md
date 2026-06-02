@@ -93,6 +93,8 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 }
 ```
 
+To run the MCP server in read-only mode (so agents cannot trigger live network calls to OLX via the `olx_sync` tool), add `--read-only` to the command arguments, or set the `READ_ONLY_MODE=true` environment variable.
+
 </details>
 
 ## Quick Start
@@ -112,7 +114,7 @@ This checks your configuration.
 ### 3. Try Your First Command
 
 ```bash
-olx-pp-cli apigateway --data example-value --query example-value
+olx-pp-cli sync --category 1447,1754
 ```
 
 ## Usage
@@ -121,87 +123,55 @@ Run `olx-pp-cli --help` for the full command reference and flag list.
 
 ## Commands
 
-### apigateway
+### sync
 
-Operations on graphql
+Pull OLX.pl job listings into the local SQLite store.
 
-- **`olx-pp-cli apigateway`** - POST /apigateway/graphql
+- **`olx-pp-cli sync`** - Syncs listings
 
-### candidates
+### jobs
 
-Operations on applications-count
+Query job listings from the local store (no network)
 
-- **`olx-pp-cli candidates get-applications-count`** - GET /api/candidates/v1/offers/{id}/applications-count
-- **`olx-pp-cli candidates options-applications-count`** - OPTIONS /api/candidates/v1/offers/{id}/applications-count
+- **`olx-pp-cli jobs`** - Queries jobs
 
-### data
+### companies
 
-Operations on cookies.json
+Surface companies posting many job listings (sales-prospecting view)
 
-- **`olx-pp-cli data`** - GET /data/olx/cookies.json
+- **`olx-pp-cli companies`** - Queries companies
 
-### friendly-links
+### export
 
-Operations on praca,produkcja
+Dump query results to CSV or JSON
 
-- **`olx-pp-cli friendly-links`** - GET /api/v1/friendly-links/query-params/praca,produkcja,obsluga-produkcji/
+- **`olx-pp-cli export`** - Exports data
 
-### graphql
+### doctor
 
-Operations on graphql
+Check OLX connectivity, store health, and config paths
 
-- **`olx-pp-cli graphql create-graphql`** - POST /graphql
-- **`olx-pp-cli graphql list-graphql`** - GET /graphql
-- **`olx-pp-cli graphql options-graphql`** - OPTIONS /graphql
+- **`olx-pp-cli doctor`** - Checks health
 
-### offers
+## Contract for downstream consumers
 
-Operations on filters
-
-- **`olx-pp-cli offers create-offers`** - POST /v1/offers
-- **`olx-pp-cli offers get-breadcrumbs`** - GET /api/v1/offers/{id}/breadcrumbs/
-- **`olx-pp-cli offers get-offers`** - GET /api/v2/offers/{id}/
-- **`olx-pp-cli offers list-breadcrumbs`** - GET /api/v1/offers/metadata/breadcrumbs/
-- **`olx-pp-cli offers list-search`** - GET /api/v1/offers/metadata/search/
-- **`olx-pp-cli offers list-search-categories`** - GET /api/v1/offers/metadata/search-categories/
-
-### seo
-
-Operations on searches
-
-- **`olx-pp-cli seo list-content`** - GET /api/v1/seo/d/content/
-- **`olx-pp-cli seo list-searches`** - GET /api/v1/seo/searches/
-
-### users
-
-Operations on users
-
-- **`olx-pp-cli users <id>`** - GET /api/v1/users/{id}/
-
-### widgets
-
-Operations on widgets
-
-- **`olx-pp-cli widgets`** - POST /api/widgets
-
+The local SQLite database (`olx_jobs.db`) provides the following guarantees for downstream consumers (e.g., Python pipelines):
+- **Stabilny kontrakt:** Tabele `companies`, `jobs`, `phones` i `sync_runs` to stabilne struktury.
+- **Wartości Guaranteed vs Best-effort:** Część kolumn zawsze zawiera wartość (np. id, tytuł), a inne (np. szczegóły, email) są best-effort, wypełniane jeśli dostępne.
+- **Null vs pusty string:** Brak rekordu w `phones` oznacza brak telefonów; statusy enrichmentu w `jobs` wskazują powody braku danych.
+- **Statusy enrichmentu:** Tabela `jobs` zawiera `detail_fetched`, `phones_attempted`, `phones_blocked`, `employer_fetched`, oraz `fetch_error`, żeby móc odróżnić czy proces syncu napotkał błąd od rzeczywistego braku danych po stronie OLX.
 
 ## Output Formats
 
 ```bash
 # Human-readable table (default in terminal, JSON when piped)
-olx-pp-cli apigateway --data example-value --query example-value
+olx-pp-cli jobs --limit 10
 
 # JSON for scripting and agents
-olx-pp-cli apigateway --data example-value --query example-value --json
-
-# Filter to specific fields
-olx-pp-cli apigateway --data example-value --query example-value --json --select id,name,status
+olx-pp-cli jobs --limit 10 --json
 
 # Dry run — show the request without sending
-olx-pp-cli apigateway --data example-value --query example-value --dry-run
-
-# Agent mode — JSON + compact + no prompts in one flag
-olx-pp-cli apigateway --data example-value --query example-value --agent
+olx-pp-cli sync --dry-run
 ```
 
 ## Agent Usage
@@ -210,11 +180,6 @@ This CLI is designed for AI agent consumption:
 
 - **Non-interactive** - never prompts, every input is a flag
 - **Pipeable** - `--json` output to stdout, errors to stderr
-- **Filterable** - `--select id,name` returns only fields you need
-- **Previewable** - `--dry-run` shows the request without sending
-- **Explicit retries** - add `--idempotent` to create retries when a no-op success is acceptable
-- **Confirmable** - `--yes` for explicit confirmation of destructive actions
-- **Piped input** - write commands can accept structured input when their help lists `--stdin`
 - **Offline-friendly** - sync/search commands can use the local SQLite store when available
 - **Agent-safe by default** - no colors or formatting unless `--human-friendly` is set
 
@@ -227,12 +192,6 @@ olx-pp-cli doctor
 ```
 
 Verifies configuration and connectivity to the API.
-
-## Configuration
-
-Config file: `~/.config/olx-pp-cli/config.toml`
-
-Static request headers can be configured under `headers`; per-command header overrides take precedence.
 
 ## Troubleshooting
 **Not found errors (exit code 3)**

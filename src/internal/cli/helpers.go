@@ -108,6 +108,15 @@ func openStore(ctx context.Context, flags *rootFlags) (*store.Store, error) {
 	return s, nil
 }
 
+func openStoreReadOnly(ctx context.Context, flags *rootFlags) (*store.Store, error) {
+	path := resolveDBPath(flags.dbPath)
+	s, err := store.OpenReadOnly(path)
+	if err != nil {
+		return nil, fmt.Errorf("open read-only store at %s: %w", path, err)
+	}
+	return s, nil
+}
+
 func newOLXClient(flags *rootFlags) *olx.Client {
 	return olx.New(olx.Options{
 		WWWPerSec:    flags.rpsWWW,

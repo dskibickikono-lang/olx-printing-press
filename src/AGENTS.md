@@ -35,6 +35,8 @@ Use `--yes --no-input` only after the target, arguments, and side effects are cl
 
 For install, auth, examples, and longer product guidance, read `README.md` and `SKILL.md`. This file intentionally stays small so repo-local agents get invariant local guidance without duplicating the generated docs.
 
+If you are running the MCP server and want to disable `olx_sync` to ensure complete read-only operation with no live OLX requests, start the server with `--read-only` or env `READ_ONLY_MODE=true`.
+
 ## Local Customizations
 
 If you modify this CLI beyond what the generator produced, record each customization in a `.printing-press-patches.json` at this CLI's root (parallel to `.printing-press.json`) so the change isn't lost on the next regen and is visible to the next reader.

@@ -78,7 +78,7 @@ func runExport(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *expo
 	}
 	defer w.Close()
 
-	st, err := openStore(ctx, root)
+	st, err := openStoreReadOnly(ctx, root)
 	if err != nil {
 		return err
 	}

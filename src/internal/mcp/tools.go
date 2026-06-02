@@ -21,18 +21,20 @@ import (
 )
 
 // RegisterTools registers the five OLX workflow tools on s.
-func RegisterTools(s *server.MCPServer) {
-	s.AddTool(mcp.NewTool("olx_sync",
-		mcp.WithDescription("Pull OLX.pl job listings into the local SQLite store. Walks each category page-by-page via apigateway/graphql ListingSearchQuery, hydrates new offers via /api/v2/offers/{id}/, optionally pulls phones and seller profiles."),
-		mcp.WithString("category", mcp.Description("Comma-separated OLX category_ids. Defaults to 1447,1754 (production / production handling).")),
-		mcp.WithNumber("pages", mcp.Description("Stop after N pages per category (0 = until empty).")),
-		mcp.WithNumber("per_page", mcp.Description("Offers per page (OLX caps around 40; default 40).")),
-		mcp.WithBoolean("include_phones", mcp.Description("Fetch limited-phones for new offers. Slower and rate-limited by OLX.")),
-		mcp.WithBoolean("include_employer", mcp.Description("Resolve the seller profile via /api/v1/users/{id}/ (default true).")),
-		mcp.WithBoolean("fetch_detail", mcp.Description("Pull full /api/v2/offers/{id}/ for each new offer (default true; needed for email mining from descriptions).")),
-		mcp.WithDestructiveHintAnnotation(false),
-		mcp.WithOpenWorldHintAnnotation(true),
-	), handleSync)
+func RegisterTools(s *server.MCPServer, readOnly bool) {
+	if !readOnly {
+		s.AddTool(mcp.NewTool("olx_sync",
+			mcp.WithDescription("Pull OLX.pl job listings into the local SQLite store. Walks each category page-by-page via apigateway/graphql ListingSearchQuery, hydrates new offers via /api/v2/offers/{id}/, optionally pulls phones and seller profiles."),
+			mcp.WithString("category", mcp.Description("Comma-separated OLX category_ids. Defaults to 1447,1754 (production / production handling).")),
+			mcp.WithNumber("pages", mcp.Description("Stop after N pages per category (0 = until empty).")),
+			mcp.WithNumber("per_page", mcp.Description("Offers per page (OLX caps around 40; default 40).")),
+			mcp.WithBoolean("include_phones", mcp.Description("Fetch limited-phones for new offers. Slower and rate-limited by OLX.")),
+			mcp.WithBoolean("include_employer", mcp.Description("Resolve the seller profile via /api/v1/users/{id}/ (default true).")),
+			mcp.WithBoolean("fetch_detail", mcp.Description("Pull full /api/v2/offers/{id}/ for each new offer (default true; needed for email mining from descriptions).")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithOpenWorldHintAnnotation(true),
+		), handleSync)
+	}
 
 	s.AddTool(mcp.NewTool("olx_jobs",
 		mcp.WithDescription("Query job listings from the local SQLite store. No OLX traffic; reads only what 'olx_sync' has already pulled."),

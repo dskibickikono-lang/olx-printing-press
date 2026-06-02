@@ -68,7 +68,7 @@ Examples:
 }
 
 func runJobs(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *jobsFlags) error {
-	st, err := openStore(ctx, root)
+	st, err := openStoreReadOnly(ctx, root)
 	if err != nil {
 		return err
 	}
@@ -137,8 +137,13 @@ func QueryJobs(ctx context.Context, db *sql.DB, q JobsQuery) ([]JobRow, error) {
 		args = append(args, q.City)
 	}
 	if q.CompanyID != "" {
-		where = append(where, "j.company_id = ?")
-		args = append(args, q.CompanyID)
+		if strings.HasPrefix(q.CompanyID, "olx:") {
+			where = append(where, "j.company_id = ?")
+			args = append(args, q.CompanyID)
+		} else {
+			where = append(where, "(j.company_id = ? OR j.company_id = ?)")
+			args = append(args, q.CompanyID, "olx:"+q.CompanyID)
+		}
 	}
 	if q.TitleQuery != "" {
 		where = append(where, "LOWER(j.title) LIKE LOWER(?)")
@@ -162,7 +167,7 @@ func QueryJobs(ctx context.Context, db *sql.DB, q JobsQuery) ([]JobRow, error) {
 	sqlText := `SELECT j.id, j.url, j.title, j.category_id, j.company_id,
 		COALESCE(c.name, ''), COALESCE(j.location_city, ''), COALESCE(j.location_region, ''),
 		COALESCE(j.posted_at, ''), COALESCE(j.refreshed_at, '')
-		FROM jobs j LEFT JOIN companies c ON c.id = j.company_id`
+		FROM jobs j LEFT JOIN companies c ON c.id = j.company_id OR ('olx:' || c.id) = j.company_id OR c.id = ('olx:' || j.company_id)`
 	if len(where) > 0 {
 		sqlText += " WHERE " + strings.Join(where, " AND ")
 	}
@@ -233,8 +238,13 @@ func JobsTotal(ctx context.Context, db *sql.DB, q JobsQuery) (int, error) {
 		args = append(args, q.City)
 	}
 	if q.CompanyID != "" {
-		where = append(where, "j.company_id = ?")
-		args = append(args, q.CompanyID)
+		if strings.HasPrefix(q.CompanyID, "olx:") {
+			where = append(where, "j.company_id = ?")
+			args = append(args, q.CompanyID)
+		} else {
+			where = append(where, "(j.company_id = ? OR j.company_id = ?)")
+			args = append(args, q.CompanyID, "olx:"+q.CompanyID)
+		}
 	}
 	if q.TitleQuery != "" {
 		where = append(where, "LOWER(j.title) LIKE LOWER(?)")

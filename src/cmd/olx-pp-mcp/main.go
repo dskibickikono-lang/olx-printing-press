@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/mark3labs/mcp-go/server"
 	mcptools "github.com/dskibickikono-lang/olx-pp-cli/internal/mcp"
@@ -18,7 +19,17 @@ func main() {
 		server.WithToolCapabilities(false),
 	)
 
-	mcptools.RegisterTools(s)
+	readOnly := false
+	for _, arg := range os.Args[1:] {
+		if arg == "--read-only" {
+			readOnly = true
+		}
+	}
+	if strings.ToLower(os.Getenv("READ_ONLY_MODE")) == "true" {
+		readOnly = true
+	}
+
+	mcptools.RegisterTools(s, readOnly)
 
 	if err := server.ServeStdio(s); err != nil {
 		fmt.Fprintf(os.Stderr, "MCP server error: %v\n", err)

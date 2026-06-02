@@ -144,6 +144,12 @@ func (c *Client) PhonesBlocked() bool {
 	return c.phonesBlocked.Load()
 }
 
+// PhonesBlockedStoreTrue manually sets the phones blocked flag to true.
+// Used when resuming a sync soon after a previous run was blocked.
+func (c *Client) PhonesBlockedStoreTrue() {
+	c.phonesBlocked.Store(true)
+}
+
 // SearchParam is a key/value pair in the apigateway GraphQL searchParameters input.
 type SearchParam struct {
 	Key   string `json:"key"`
