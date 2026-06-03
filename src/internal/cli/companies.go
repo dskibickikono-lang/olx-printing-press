@@ -31,6 +31,10 @@ type CompanyRow struct {
 	Region     string `json:"region,omitempty"`
 	Phone      string `json:"phone,omitempty"`
 	Email      string `json:"email,omitempty"`
+	NIP        string `json:"nip,omitempty"`
+	KRS        string `json:"krs,omitempty"`
+	REGON      string `json:"regon,omitempty"`
+	LegalForm  string `json:"legal_form,omitempty"`
 	JobsCount  int    `json:"jobs_count"`
 	FirstSeen  string `json:"first_seen,omitempty"`
 	LastSeen   string `json:"last_seen,omitempty"`
@@ -62,7 +66,7 @@ Examples:
 }
 
 func runCompanies(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *companiesFlags) error {
-	st, err := openStore(ctx, root)
+	st, err := openStoreReadOnly(ctx, root)
 	if err != nil {
 		return err
 	}
@@ -204,6 +208,7 @@ func QueryCompanies(ctx context.Context, db *sql.DB, q CompaniesQuery) ([]Compan
 		SELECT c.id, COALESCE(c.name, ''), COALESCE(c.is_business, 0),
 			COALESCE(c.city, ''), COALESCE(c.region, ''),
 			COALESCE(c.phone, ''), COALESCE(c.email, ''),
+			COALESCE(c.nip, ''), COALESCE(c.krs, ''), COALESCE(c.regon, ''), COALESCE(c.legal_form, ''),
 			jc.n, COALESCE(c.first_seen, ''), COALESCE(c.last_seen, '')
 		FROM job_counts jc
 		LEFT JOIN companies c ON c.id = jc.cid
@@ -221,7 +226,7 @@ func QueryCompanies(ctx context.Context, db *sql.DB, q CompaniesQuery) ([]Compan
 	for rows.Next() {
 		var r CompanyRow
 		var bizInt int
-		if err := rows.Scan(&r.ID, &r.Name, &bizInt, &r.City, &r.Region, &r.Phone, &r.Email, &r.JobsCount, &r.FirstSeen, &r.LastSeen); err != nil {
+		if err := rows.Scan(&r.ID, &r.Name, &bizInt, &r.City, &r.Region, &r.Phone, &r.Email, &r.NIP, &r.KRS, &r.REGON, &r.LegalForm, &r.JobsCount, &r.FirstSeen, &r.LastSeen); err != nil {
 			return nil, err
 		}
 		r.IsBusiness = bizInt != 0

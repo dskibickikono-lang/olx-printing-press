@@ -41,7 +41,11 @@ func IsUUID(s string) bool {
 // shape — adding columns, dropping indexes, changing FTS5 tokenizers —
 // so an older binary refuses to open a newer database rather than silently
 // producing wrong results against a schema it cannot read.
-const StoreSchemaVersion = 2
+// v3: OLX ids carry an "olx:" namespace and legacy bare-id rows are
+// rewritten in place (see migratePrefixLegacyIDs). The bump locks out
+// pre-namespace binaries, whose sync would re-insert bare-id rows and
+// re-introduce the duplication the migration removes.
+const StoreSchemaVersion = 3
 
 const resourcesFTSCreateSQL = `CREATE VIRTUAL TABLE IF NOT EXISTS resources_fts USING fts5(
 	id, resource_type, content, tokenize='porter unicode61'

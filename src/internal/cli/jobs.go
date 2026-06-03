@@ -68,7 +68,7 @@ Examples:
 }
 
 func runJobs(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *jobsFlags) error {
-	st, err := openStore(ctx, root)
+	st, err := openStoreReadOnly(ctx, root)
 	if err != nil {
 		return err
 	}
@@ -138,7 +138,7 @@ func QueryJobs(ctx context.Context, db *sql.DB, q JobsQuery) ([]JobRow, error) {
 	}
 	if q.CompanyID != "" {
 		where = append(where, "j.company_id = ?")
-		args = append(args, q.CompanyID)
+		args = append(args, olxID(q.CompanyID))
 	}
 	if q.TitleQuery != "" {
 		where = append(where, "LOWER(j.title) LIKE LOWER(?)")
@@ -234,7 +234,7 @@ func JobsTotal(ctx context.Context, db *sql.DB, q JobsQuery) (int, error) {
 	}
 	if q.CompanyID != "" {
 		where = append(where, "j.company_id = ?")
-		args = append(args, q.CompanyID)
+		args = append(args, olxID(q.CompanyID))
 	}
 	if q.TitleQuery != "" {
 		where = append(where, "LOWER(j.title) LIKE LOWER(?)")

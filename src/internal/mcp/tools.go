@@ -15,24 +15,40 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	"github.com/dskibickikono-lang/olx-pp-cli/internal/bizraport"
 	"github.com/dskibickikono-lang/olx-pp-cli/internal/cli"
+	"github.com/dskibickikono-lang/olx-pp-cli/internal/config"
 	"github.com/dskibickikono-lang/olx-pp-cli/internal/olx"
 	"github.com/dskibickikono-lang/olx-pp-cli/internal/store"
 )
 
-// RegisterTools registers the five OLX workflow tools on s.
-func RegisterTools(s *server.MCPServer) {
-	s.AddTool(mcp.NewTool("olx_sync",
-		mcp.WithDescription("Pull OLX.pl job listings into the local SQLite store. Walks each category page-by-page via apigateway/graphql ListingSearchQuery, hydrates new offers via /api/v2/offers/{id}/, optionally pulls phones and seller profiles."),
-		mcp.WithString("category", mcp.Description("Comma-separated OLX category_ids. Defaults to 1447,1754 (production / production handling).")),
-		mcp.WithNumber("pages", mcp.Description("Stop after N pages per category (0 = until empty).")),
-		mcp.WithNumber("per_page", mcp.Description("Offers per page (OLX caps around 40; default 40).")),
-		mcp.WithBoolean("include_phones", mcp.Description("Fetch limited-phones for new offers. Slower and rate-limited by OLX.")),
-		mcp.WithBoolean("include_employer", mcp.Description("Resolve the seller profile via /api/v1/users/{id}/ (default true).")),
-		mcp.WithBoolean("fetch_detail", mcp.Description("Pull full /api/v2/offers/{id}/ for each new offer (default true; needed for email mining from descriptions).")),
-		mcp.WithDestructiveHintAnnotation(false),
-		mcp.WithOpenWorldHintAnnotation(true),
-	), handleSync)
+// RegisterTools registers the OLX workflow tools on s. In read-only mode
+// the tools that make live network calls (olx_sync, olx_enrich) are not
+// registered, leaving only local-store reads.
+func RegisterTools(s *server.MCPServer, readOnly bool) {
+	if !readOnly {
+		s.AddTool(mcp.NewTool("olx_sync",
+			mcp.WithDescription("Pull OLX.pl job listings into the local SQLite store. Walks each category page-by-page via apigateway/graphql ListingSearchQuery, hydrates new offers via /api/v2/offers/{id}/, optionally pulls phones and seller profiles."),
+			mcp.WithString("category", mcp.Description("Comma-separated OLX category_ids. Defaults to 1447,1754 (production / production handling).")),
+			mcp.WithNumber("pages", mcp.Description("Stop after N pages per category (0 = until empty).")),
+			mcp.WithNumber("per_page", mcp.Description("Offers per page (OLX caps around 40; default 40).")),
+			mcp.WithBoolean("include_phones", mcp.Description("Fetch limited-phones for new offers. Slower and rate-limited by OLX.")),
+			mcp.WithBoolean("include_employer", mcp.Description("Resolve the seller profile via /api/v1/users/{id}/ (default true).")),
+			mcp.WithBoolean("fetch_detail", mcp.Description("Pull full /api/v2/offers/{id}/ for each new offer (default true; needed for email mining from descriptions).")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithOpenWorldHintAnnotation(true),
+		), handleSync)
+
+		s.AddTool(mcp.NewTool("olx_enrich",
+			mcp.WithDescription("Enrich synced companies with KRS/NIP registry data from bizraport.pl (NIP, KRS, REGON, address, legal form). Resolves highest-volume employers first; caches per-KRS responses. Requires bizraport credentials in config or BIZRAPORT_EMAIL/BIZRAPORT_PASSWORD."),
+			mcp.WithNumber("limit", mcp.Description("Max companies to enrich in this run (default 25).")),
+			mcp.WithNumber("ttl_days", mcp.Description("Re-enrich companies older than this; also per-KRS cache TTL (default 7).")),
+			mcp.WithNumber("min_jobs", mcp.Description("Only enrich companies with at least this many synced jobs (default 1).")),
+			mcp.WithNumber("max_candidates", mcp.Description("On ambiguous name search, fetch at most this many KRS profiles to disambiguate (default 3).")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithOpenWorldHintAnnotation(true),
+		), handleEnrich)
+	}
 
 	s.AddTool(mcp.NewTool("olx_jobs",
 		mcp.WithDescription("Query job listings from the local SQLite store. No OLX traffic; reads only what 'olx_sync' has already pulled."),
@@ -104,6 +120,39 @@ func handleSync(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResu
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 	out, _ := json.MarshalIndent(stats, "", "  ")
+	return mcp.NewToolResultText(string(out)), nil
+}
+
+func handleEnrich(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+	cfg, err := config.Load("")
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+	if !cfg.Bizraport.Configured() {
+		return mcp.NewToolResultError("bizraport credentials not set (config [bizraport] or BIZRAPORT_EMAIL/BIZRAPORT_PASSWORD)"), nil
+	}
+	st, err := openStoreMCP(ctx)
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+	defer st.Close()
+
+	client := bizraport.New(bizraport.Options{
+		Email:    cfg.Bizraport.Email,
+		Password: cfg.Bizraport.Password,
+		BaseURL:  cfg.Bizraport.BaseURL,
+		PerSec:   cfg.Bizraport.RPS,
+	})
+	rows, enriched, err := cli.RunEnrichProgrammatic(ctx, st, client, cli.EnrichOptions{
+		Limit:         int(req.GetFloat("limit", 25)),
+		TTLDays:       int(req.GetFloat("ttl_days", 7)),
+		MinJobs:       int(req.GetFloat("min_jobs", 1)),
+		MaxCandidates: int(req.GetFloat("max_candidates", 3)),
+	})
+	if err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+	out, _ := json.MarshalIndent(map[string]any{"enriched": enriched, "results": rows}, "", "  ")
 	return mcp.NewToolResultText(string(out)), nil
 }
 

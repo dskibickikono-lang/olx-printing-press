@@ -78,7 +78,7 @@ func runExport(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *expo
 	}
 	defer w.Close()
 
-	st, err := openStore(ctx, root)
+	st, err := openStoreReadOnly(ctx, root)
 	if err != nil {
 		return err
 	}
@@ -135,7 +135,7 @@ func jobRows(rs []JobRow) [][]string {
 }
 
 func companiesHeaders() []string {
-	return []string{"id", "name", "is_business", "city", "region", "phone", "email", "jobs_count", "first_seen", "last_seen"}
+	return []string{"id", "name", "is_business", "city", "region", "phone", "email", "nip", "krs", "regon", "legal_form", "jobs_count", "first_seen", "last_seen"}
 }
 
 func companyRows(rs []CompanyRow) [][]string {
@@ -147,6 +147,7 @@ func companyRows(rs []CompanyRow) [][]string {
 		}
 		out = append(out, []string{
 			r.ID, r.Name, biz, r.City, r.Region, r.Phone, r.Email,
+			r.NIP, r.KRS, r.REGON, r.LegalForm,
 			strconv.Itoa(r.JobsCount), r.FirstSeen, r.LastSeen,
 		})
 	}

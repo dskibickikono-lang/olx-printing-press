@@ -16,8 +16,25 @@ type Config struct {
 	BaseURL       string            `toml:"base_url"`
 	AuthHeaderVal string            `toml:"auth_header"`
 	Headers       map[string]string `toml:"headers,omitempty"`
+	Bizraport     BizraportConfig   `toml:"bizraport"`
 	AuthSource    string            `toml:"-"`
 	Path          string            `toml:"-"`
+}
+
+// BizraportConfig holds credentials and tuning for the bizraport.pl
+// registry API used by the `enrich` command. Credentials may also be
+// supplied via BIZRAPORT_EMAIL / BIZRAPORT_PASSWORD env vars, which
+// override the file values.
+type BizraportConfig struct {
+	Email    string  `toml:"email"`
+	Password string  `toml:"password"`
+	BaseURL  string  `toml:"base_url,omitempty"`
+	RPS      float64 `toml:"rps,omitempty"`
+}
+
+// Configured reports whether both bizraport credentials are present.
+func (b BizraportConfig) Configured() bool {
+	return b.Email != "" && b.Password != ""
 }
 
 func Load(configPath string) (*Config, error) {
@@ -61,6 +78,18 @@ func Load(configPath string) (*Config, error) {
 	// Base URL override (used by printing-press verify to point at mock/test servers)
 	if v := os.Getenv("OLX_BASE_URL"); v != "" {
 		cfg.BaseURL = v
+	}
+
+	// bizraport.pl credentials: env vars override the config file so secrets
+	// can stay out of the file when desired.
+	if v := os.Getenv("BIZRAPORT_EMAIL"); v != "" {
+		cfg.Bizraport.Email = v
+	}
+	if v := os.Getenv("BIZRAPORT_PASSWORD"); v != "" {
+		cfg.Bizraport.Password = v
+	}
+	if v := os.Getenv("BIZRAPORT_BASE_URL"); v != "" {
+		cfg.Bizraport.BaseURL = v
 	}
 	return cfg, nil
 }

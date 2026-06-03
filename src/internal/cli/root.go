@@ -88,6 +88,7 @@ Read-only. No OLX account or API key required.`,
 	cmd.AddCommand(newSyncCmd(flags))
 	cmd.AddCommand(newJobsCmd(flags))
 	cmd.AddCommand(newCompaniesCmd(flags))
+	cmd.AddCommand(newEnrichCmd(flags))
 	cmd.AddCommand(newExportCmd(flags))
 	cmd.AddCommand(newDoctorCmd(flags))
 
