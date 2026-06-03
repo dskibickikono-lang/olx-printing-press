@@ -8,7 +8,16 @@ Goals:
 - Store data in a local database (SQLite). 
 - Analytics: detect companies or accounts that post many job listings in these categories. 
 - Prioritize extraction of: company name, company address, job title, phone number, email address, short job description. 
+- Enrich detected companies with registry data (NIP, KRS, REGON, address, legal form) via the bizraport.pl API — see the `enrich` command.
 - Provide a simple CLI interface that is easy to integrate later with external systems (Pipedrive, REGON, OpenClaw, etc.).
+
+Commands: `sync` (pull OLX → SQLite), `jobs` / `companies` (local analytics, read-only), `enrich` (bizraport.pl registry enrichment), `export` (CSV/JSON), `doctor` (`--offline` default / `--live`). Same surface is exposed as MCP tools.
+
+Data model & integrations:
+- IDs in `jobs` and `companies` carry a `source` namespace prefix (`olx:<id>`); the `source` column ('olx') marks record origin. Bump `StoreSchemaVersion` and add an idempotent migration for any identity-changing schema change.
+- Enrichment writes `nip/krs/regon/legal_form/share_capital` + `enriched_source/enriched_at` onto existing company rows (never a new row); raw API responses are cached per KRS in `bizraport_cache`.
+- bizraport.pl: credentials via `[bizraport]` config or `BIZRAPORT_EMAIL`/`BIZRAPORT_PASSWORD`; auth is in the query string, so never log full URLs. It **bills per returned row** — cache and gate with `--limit`/`--budget-pln`.
+- Read-only: `--read-only`/`READ_ONLY_MODE` on the MCP server withholds the live-network tools (`olx_sync`, `olx_enrich`), leaving local reads only.
 
 Directory structure: 
 - `~/projects/printing-press/olx/src` – source code only (Go, MCP, config). 
