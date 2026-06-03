@@ -9,12 +9,24 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/tabwriter"
 	"time"
 
 	"github.com/dskibickikono-lang/olx-pp-cli/internal/olx"
 	"github.com/dskibickikono-lang/olx-pp-cli/internal/store"
 )
+
+// olxID normalizes a company/offer id to the canonical "olx:" namespace.
+// Bare ids (as a user might type on the CLI) get the prefix; already-
+// prefixed or empty ids pass through. Lets query predicates compare a
+// single indexed column instead of OR-ing prefixed and bare forms.
+func olxID(id string) string {
+	if id == "" || strings.HasPrefix(id, "olx:") {
+		return id
+	}
+	return "olx:" + id
+}
 
 // usageError marks an error caused by bad command-line usage. ExitCode
 // maps these to exit status 2.
@@ -110,6 +122,12 @@ func openStore(ctx context.Context, flags *rootFlags) (*store.Store, error) {
 
 func openStoreReadOnly(ctx context.Context, flags *rootFlags) (*store.Store, error) {
 	path := resolveDBPath(flags.dbPath)
+	// Read-only open does not create the file; a missing DB usually means
+	// the user hasn't synced yet. Surface that as actionable guidance
+	// rather than a raw driver error on first query.
+	if _, statErr := os.Stat(path); os.IsNotExist(statErr) {
+		return nil, usageErr("no local database at %s — run `olx-pp-cli sync` first", path)
+	}
 	s, err := store.OpenReadOnly(path)
 	if err != nil {
 		return nil, fmt.Errorf("open read-only store at %s: %w", path, err)

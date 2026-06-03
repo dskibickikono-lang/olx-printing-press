@@ -105,7 +105,7 @@ func runSync(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *syncFl
 		if err == nil && lastFinishedAt.Valid && lastFinishedAt.String != "" {
 			if parsed, ok := store.ParseStoredTime(lastFinishedAt.String); ok && !parsed.IsZero() {
 				if time.Since(parsed) < time.Duration(f.phonesCooldown)*time.Hour {
-					client.PhonesBlockedStoreTrue()
+					client.SetPhonesBlocked(true)
 					fmt.Fprintf(cmd.ErrOrStderr(), "note: phones are still blocked from a previous run (ends in %v). Skipping limited-phones fetches.\n", time.Duration(f.phonesCooldown)*time.Hour-time.Since(parsed))
 				}
 			}
@@ -232,9 +232,13 @@ func upsertListing(ctx context.Context, cmd progressSink, st *store.Store, clien
 	}
 
 	// Company upsert first so the FK on jobs.company_id resolves.
-	companyID := lst.User.UUID
+	// Canonical company key is the numeric OLX user id (matches the bare
+	// ids that migratePrefixLegacyIDs prefixed to "olx:<numeric>"); the
+	// UUID is kept separately in OLXUserUUID. Falling back to UUID only
+	// when no numeric id exists keeps a single namespace per employer.
+	companyID := lst.User.ID.String()
 	if companyID == "" {
-		companyID = lst.User.ID.String()
+		companyID = lst.User.UUID
 	}
 	prefixedCompanyID := ""
 	employerFetched := false

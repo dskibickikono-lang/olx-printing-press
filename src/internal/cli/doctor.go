@@ -5,8 +5,13 @@ package cli
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
+	"strings"
 	"time"
 
+	"github.com/dskibickikono-lang/olx-pp-cli/internal/bizraport"
+	"github.com/dskibickikono-lang/olx-pp-cli/internal/config"
 	"github.com/spf13/cobra"
 )
 
@@ -61,15 +66,61 @@ func runDoctor(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *doct
 		}
 		fmt.Fprintf(out, "olx ping     : OK — %d listings in 5-row probe of category=%d\n", len(listings), defaultCategoryIDs[0])
 	} else {
-		// Offline mode: just check DB
-		st, err := openStoreReadOnly(ctx, root)
-		if err != nil {
-			fmt.Fprintf(out, "store        : FAIL — %v\n", err)
-			return err
+		// Offline mode: just check DB. A missing file is informational, not
+		// a failure — it just means nothing has been synced yet.
+		dbPath := resolveDBPath(root.dbPath)
+		if _, statErr := os.Stat(dbPath); os.IsNotExist(statErr) {
+			fmt.Fprintln(out, "store        : MISSING — run `olx-pp-cli sync`")
+		} else {
+			st, err := openStoreReadOnly(ctx, root)
+			if err != nil {
+				fmt.Fprintf(out, "store        : FAIL — %v\n", err)
+				return err
+			}
+			defer st.Close()
+			fmt.Fprintln(out, "store        : OK (offline)")
 		}
-		defer st.Close()
-		fmt.Fprintln(out, "store        : OK (offline)")
 	}
 
+	reportBizraport(ctx, out, f.live)
 	return nil
+}
+
+// reportBizraport prints the bizraport.pl credential status (masked) and,
+// in live mode, the month-to-date usage/cost.
+func reportBizraport(ctx context.Context, out io.Writer, live bool) {
+	cfg, err := config.Load("")
+	if err != nil || !cfg.Bizraport.Configured() {
+		fmt.Fprintln(out, "bizraport    : not configured (set [bizraport] email/password or BIZRAPORT_EMAIL/BIZRAPORT_PASSWORD)")
+		return
+	}
+	fmt.Fprintf(out, "bizraport    : configured (email=%s, password=set)\n", maskEmail(cfg.Bizraport.Email))
+	if !live {
+		return
+	}
+	client := bizraport.New(bizraport.Options{
+		Email:    cfg.Bizraport.Email,
+		Password: cfg.Bizraport.Password,
+		BaseURL:  cfg.Bizraport.BaseURL,
+		PerSec:   cfg.Bizraport.RPS,
+	})
+	usageCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	u, err := client.Usage(usageCtx)
+	if err != nil {
+		fmt.Fprintf(out, "bizraport use: FAIL — %v\n", err)
+		return
+	}
+	fmt.Fprintf(out, "bizraport use: %s — %.2f PLN net month-to-date\n", u.Miesiac, u.KosztNettoPLN)
+}
+
+// maskEmail keeps the first character and domain, hiding the rest, so a
+// configured address is recognizable in doctor output without leaking it.
+func maskEmail(email string) string {
+	at := strings.IndexByte(email, '@')
+	if at <= 0 {
+		return "***"
+	}
+	first := email[:1]
+	return first + "***" + email[at:]
 }

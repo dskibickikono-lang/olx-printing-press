@@ -144,10 +144,10 @@ func (c *Client) PhonesBlocked() bool {
 	return c.phonesBlocked.Load()
 }
 
-// PhonesBlockedStoreTrue manually sets the phones blocked flag to true.
-// Used when resuming a sync soon after a previous run was blocked.
-func (c *Client) PhonesBlockedStoreTrue() {
-	c.phonesBlocked.Store(true)
+// SetPhonesBlocked forces the sticky phones-blocked flag. Used when
+// resuming a sync soon after a previous run was blocked.
+func (c *Client) SetPhonesBlocked(blocked bool) {
+	c.phonesBlocked.Store(blocked)
 }
 
 // SearchParam is a key/value pair in the apigateway GraphQL searchParameters input.

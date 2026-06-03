@@ -93,7 +93,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 }
 ```
 
-To run the MCP server in read-only mode (so agents cannot trigger live network calls to OLX via the `olx_sync` tool), add `--read-only` to the command arguments, or set the `READ_ONLY_MODE=true` environment variable.
+To run the MCP server in read-only mode (so agents cannot trigger live network calls), add `--read-only` to the command arguments, or set the `READ_ONLY_MODE=true` environment variable. This withholds both `olx_sync` (live OLX) and `olx_enrich` (live bizraport.pl), leaving only local-store reads.
 
 </details>
 
@@ -141,6 +141,21 @@ Surface companies posting many job listings (sales-prospecting view)
 
 - **`olx-pp-cli companies`** - Queries companies
 
+### enrich
+
+Enrich synced companies with KRS/NIP registry data from bizraport.pl (NIP, KRS, REGON, address, legal form). Highest-volume employers first; per-KRS responses are cached.
+
+- **`olx-pp-cli enrich`** - Enriches companies
+- Credentials: `[bizraport]` in `config.toml` or `BIZRAPORT_EMAIL` / `BIZRAPORT_PASSWORD`.
+- Cost control: bizraport bills per returned row — use `--limit`, `--ttl-days`, `--budget-pln`, and `--dry-run` (preview candidates, no API calls).
+
+```toml
+# ~/.config/olx-pp-cli/config.toml
+[bizraport]
+email = "you@example.com"
+password = "..."
+```
+
 ### export
 
 Dump query results to CSV or JSON
@@ -160,6 +175,8 @@ The local SQLite database (`olx_jobs.db`) provides the following guarantees for 
 - **Wartości Guaranteed vs Best-effort:** Część kolumn zawsze zawiera wartość (np. id, tytuł), a inne (np. szczegóły, email) są best-effort, wypełniane jeśli dostępne.
 - **Null vs pusty string:** Brak rekordu w `phones` oznacza brak telefonów; statusy enrichmentu w `jobs` wskazują powody braku danych.
 - **Statusy enrichmentu:** Tabela `jobs` zawiera `detail_fetched`, `phones_attempted`, `phones_blocked`, `employer_fetched`, oraz `fetch_error`, żeby móc odróżnić czy proces syncu napotkał błąd od rzeczywistego braku danych po stronie OLX.
+- **Namespace ID:** klucze `jobs.id` i `companies.id` mają prefiks `source` (np. `olx:<id>`); kolumna `source` ('olx') jawnie znakuje pochodzenie rekordu.
+- **Dane rejestrowe (bizraport):** komenda `enrich` uzupełnia w `companies` kolumny `nip`, `krs`, `regon`, `legal_form`, `share_capital` oraz `enriched_source`/`enriched_at`. Surowe odpowiedzi API trzymane są w tabeli `bizraport_cache` (klucz `krs`).
 
 ## Output Formats
 

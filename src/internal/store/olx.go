@@ -6,10 +6,11 @@
 // generic JSON-blob table so analytics queries hit indexed columns.
 //
 // Schema is created idempotently by EnsureOLXSchema, invoked once at
-// store open by NewOLXStore. We do NOT bump StoreSchemaVersion for this
-// — the generic schema and the OLX-typed schema evolve independently;
-// an older binary opening a newer DB still works against the unchanged
-// resources/sync_state tables.
+// store open. Most OLX schema additions are backward-compatible and do
+// not move StoreSchemaVersion. The exception is the "olx:" id-namespace
+// rewrite (migratePrefixLegacyIDs): it changes row identity, so v3 bumps
+// StoreSchemaVersion to keep pre-namespace binaries from opening — and
+// re-bare-id-ing — a migrated database.
 
 package store
 
@@ -17,6 +18,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -40,7 +42,94 @@ func (s *Store) EnsureOLXSchema(ctx context.Context) error {
 	if err := s.migrateAddJobEnrichmentColumns(ctx); err != nil {
 		return err
 	}
+	if err := s.migrateAddBizraportColumns(ctx); err != nil {
+		return err
+	}
+	if err := s.migratePrefixLegacyIDs(ctx); err != nil {
+		return err
+	}
 	return s.migrateOLXTimeFormats(ctx)
+}
+
+// migratePrefixLegacyIDs one-time-rewrites rows written by builds that
+// predate the "olx:" id namespace (bare numeric/uuid ids) so they share
+// the namespace new syncs write. Without this, a re-synced offer would
+// INSERT a second "olx:<id>" row beside the legacy "<id>" row (the
+// ON CONFLICT key never matches), duplicating jobs and splitting per-
+// company counts across two ids. Idempotent: the NOT LIKE 'olx:%' guards
+// make it a cheap no-op once every row carries the prefix.
+//
+// All rewrites run in one transaction with foreign-key checks deferred to
+// COMMIT, so the transient state where companies.id is prefixed but
+// jobs.company_id is not does not trip the jobs→companies FK.
+func (s *Store) migratePrefixLegacyIDs(ctx context.Context) error {
+	// Fast precheck: skip the whole transaction once all data is migrated.
+	var hasLegacy int
+	if err := s.db.QueryRowContext(ctx,
+		`SELECT EXISTS(SELECT 1 FROM jobs WHERE id NOT LIKE 'olx:%'
+		 UNION ALL SELECT 1 FROM companies WHERE id NOT LIKE 'olx:%')`,
+	).Scan(&hasLegacy); err != nil {
+		return fmt.Errorf("precheck legacy ids: %w", err)
+	}
+	if hasLegacy == 0 {
+		return nil
+	}
+
+	s.writeMu.Lock()
+	defer s.writeMu.Unlock()
+
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin id-prefix migration: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	stmts := []string{
+		`PRAGMA defer_foreign_keys = ON`,
+		`UPDATE companies SET id = 'olx:' || id WHERE id NOT LIKE 'olx:%'`,
+		`UPDATE jobs SET id = 'olx:' || id WHERE id NOT LIKE 'olx:%'`,
+		`UPDATE jobs SET company_id = 'olx:' || company_id
+			WHERE company_id IS NOT NULL AND company_id <> '' AND company_id NOT LIKE 'olx:%'`,
+		`UPDATE phones SET job_id = 'olx:' || job_id WHERE job_id NOT LIKE 'olx:%'`,
+		// Backfill the canonical OLX user id (the bare numeric id is now the
+		// part after the "olx:" prefix) for rows migrated from the old schema.
+		`UPDATE companies SET olx_user_id = substr(id, 5)
+			WHERE (olx_user_id IS NULL OR olx_user_id = '') AND id LIKE 'olx:%'`,
+	}
+	for _, stmt := range stmts {
+		if _, err := tx.ExecContext(ctx, stmt); err != nil {
+			return fmt.Errorf("id-prefix migration (%.40s): %w", stmt, err)
+		}
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit id-prefix migration: %w", err)
+	}
+	return nil
+}
+
+// migrateAddBizraportColumns adds the registry-enrichment columns filled
+// by the `enrich` command (bizraport.pl) and the per-KRS response cache.
+func (s *Store) migrateAddBizraportColumns(ctx context.Context) error {
+	stmts := []string{
+		`ALTER TABLE companies ADD COLUMN krs TEXT`,
+		`ALTER TABLE companies ADD COLUMN regon TEXT`,
+		`ALTER TABLE companies ADD COLUMN legal_form TEXT`,
+		`ALTER TABLE companies ADD COLUMN share_capital TEXT`,
+		`ALTER TABLE companies ADD COLUMN enriched_source TEXT`,
+		`ALTER TABLE companies ADD COLUMN enriched_at DATETIME`,
+		`CREATE INDEX IF NOT EXISTS companies_nip_idx ON companies(nip)`,
+		`CREATE INDEX IF NOT EXISTS companies_krs_idx ON companies(krs)`,
+		`CREATE TABLE IF NOT EXISTS bizraport_cache (
+			krs        TEXT PRIMARY KEY,
+			raw_json   TEXT NOT NULL,
+			fetched_at DATETIME NOT NULL
+		)`,
+	}
+	for _, stmt := range stmts {
+		// Ignore errors like "duplicate column name" (idempotent re-run).
+		_, _ = s.db.ExecContext(ctx, stmt)
+	}
+	return nil
 }
 
 func (s *Store) migrateAddJobEnrichmentColumns(ctx context.Context) error {
@@ -65,6 +154,10 @@ func (s *Store) migrateAddCompanyColumns(ctx context.Context) error {
 		`ALTER TABLE companies ADD COLUMN olx_user_uuid TEXT`,
 		`ALTER TABLE companies ADD COLUMN source TEXT NOT NULL DEFAULT 'olx'`,
 		`ALTER TABLE jobs ADD COLUMN source TEXT NOT NULL DEFAULT 'olx'`,
+		// Index created here (not in createOLXTables) so it runs AFTER the
+		// column is added — on a pre-existing DB the column does not exist
+		// when createOLXTables runs, and CREATE INDEX on it would fail.
+		`CREATE INDEX IF NOT EXISTS companies_olx_user_id_idx ON companies(olx_user_id)`,
 	}
 	for _, stmt := range stmts {
 		// Ignore errors like "duplicate column name"
@@ -95,7 +188,6 @@ func (s *Store) createOLXTables(ctx context.Context) error {
 		)`,
 		`CREATE INDEX IF NOT EXISTS companies_name_idx ON companies(name)`,
 		`CREATE INDEX IF NOT EXISTS companies_city_idx ON companies(city)`,
-		`CREATE INDEX IF NOT EXISTS companies_olx_user_id_idx ON companies(olx_user_id)`,
 
 		`CREATE TABLE IF NOT EXISTS jobs (
 			id               TEXT PRIMARY KEY,
@@ -342,7 +434,10 @@ func (s *Store) savePhoneTx(ctx context.Context, tx interface{ ExecContext(conte
 	return err
 }
 
-// SaveOfferAtom saves a company, a job, and its phones in a single atomic IMMEDIATE transaction.
+// SaveOfferAtom saves a company, a job, and its phones in a single
+// transaction so a row is never left half-written. writeMu serializes all
+// Go-side writers, so the default DEFERRED transaction is sufficient here;
+// the DSN's _busy_timeout covers any contention at first write.
 func (s *Store) SaveOfferAtom(ctx context.Context, c Company, j Job, phones []string) error {
 	s.writeMu.Lock()
 	defer s.writeMu.Unlock()
@@ -351,49 +446,157 @@ func (s *Store) SaveOfferAtom(ctx context.Context, c Company, j Job, phones []st
 	if err != nil {
 		return err
 	}
-	// Attempt BEGIN IMMEDIATE (since standard BeginTx uses DEFERRED, which can cause SQLITE_BUSY upon first write in WAL).
-	// With modernc.org/sqlite, standard BeginTx may already lock correctly or we can just run an immediate PRAGMA/statement,
-	// but the driver's default BeginTx usually suffices given our writeMu serialization. However, the user asked for BEGIN IMMEDIATE.
-	// We can try to commit the default DEFERRED and explicitly run BEGIN IMMEDIATE if it's safe.
-	// In the Go standard library, db.Begin() uses DEFERRED. But we are inside writeMu, so no other goroutine is writing via Go.
-	// To strictly follow the "BEGIN IMMEDIATE" directive without breaking `sql.Tx` semantics:
-	_ = tx.Rollback()
-
-	// Open a raw connection to run BEGIN IMMEDIATE
-	conn, err := s.db.Conn(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-
-	if _, err := conn.ExecContext(ctx, "BEGIN IMMEDIATE"); err != nil {
-		return err
-	}
-
-	var txErr error
-	defer func() {
-		if txErr != nil {
-			_, _ = conn.ExecContext(ctx, "ROLLBACK")
-		} else {
-			_, _ = conn.ExecContext(ctx, "COMMIT")
-		}
-	}()
+	// Rollback is a no-op once Commit succeeds; safe to always defer.
+	defer func() { _ = tx.Rollback() }()
 
 	if c.ID != "" {
-		if txErr = s.upsertCompanyTx(ctx, conn, c); txErr != nil {
-			return fmt.Errorf("upsert company %s: %w", c.ID, txErr)
+		if err := s.upsertCompanyTx(ctx, tx, c); err != nil {
+			return fmt.Errorf("upsert company %s: %w", c.ID, err)
 		}
 	}
-	if txErr = s.upsertJobTx(ctx, conn, j); txErr != nil {
-		return fmt.Errorf("upsert job %s: %w", j.ID, txErr)
+	if err := s.upsertJobTx(ctx, tx, j); err != nil {
+		return fmt.Errorf("upsert job %s: %w", j.ID, err)
 	}
 	for _, p := range phones {
-		if txErr = s.savePhoneTx(ctx, conn, j.ID, p, "limited-phones"); txErr != nil {
-			return fmt.Errorf("save phone %s: %w", p, txErr)
+		if err := s.savePhoneTx(ctx, tx, j.ID, p, "limited-phones"); err != nil {
+			return fmt.Errorf("save phone %s: %w", p, err)
 		}
 	}
 
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit offer %s: %w", j.ID, err)
+	}
 	return nil
+}
+
+// --- bizraport.pl enrichment (registry data) ---
+
+// BizraportEnrichment carries registry fields resolved for one company.
+// Empty fields are left untouched on the stored row (COALESCE/NULLIF), so
+// re-enrichment never clobbers data already present.
+type BizraportEnrichment struct {
+	CompanyID    string // existing companies.id, e.g. "olx:123"
+	NIP          string
+	KRS          string
+	REGON        string
+	LegalForm    string
+	ShareCapital string
+	Name         string
+	Address      string
+	City         string
+	Region       string
+	Email        string
+	Website      string
+}
+
+// EnrichCompany fills the registry columns on an existing company row and
+// stamps enriched_source/enriched_at. It never creates a new row — the
+// company must already exist (discovered via OLX sync).
+func (s *Store) EnrichCompany(ctx context.Context, e BizraportEnrichment) error {
+	s.writeMu.Lock()
+	defer s.writeMu.Unlock()
+	// Registry-authoritative columns (NIP/KRS/REGON/legal_form/share_capital)
+	// take the new value when present. OLX-sourced columns (name/address/
+	// city/region/email/website) are only filled when currently empty, so
+	// enrichment never clobbers data the sync collected.
+	_, err := s.db.ExecContext(ctx,
+		`UPDATE companies SET
+			nip           = COALESCE(NULLIF(?, ''), nip),
+			krs           = COALESCE(NULLIF(?, ''), krs),
+			regon         = COALESCE(NULLIF(?, ''), regon),
+			legal_form    = COALESCE(NULLIF(?, ''), legal_form),
+			share_capital = COALESCE(NULLIF(?, ''), share_capital),
+			name          = COALESCE(NULLIF(name, ''), ?),
+			address       = COALESCE(NULLIF(address, ''), ?),
+			city          = COALESCE(NULLIF(city, ''), ?),
+			region        = COALESCE(NULLIF(region, ''), ?),
+			email         = COALESCE(NULLIF(email, ''), ?),
+			website       = COALESCE(NULLIF(website, ''), ?),
+			enriched_source = 'bizraport',
+			enriched_at   = ?
+		 WHERE id = ?`,
+		e.NIP, e.KRS, e.REGON, e.LegalForm, e.ShareCapital,
+		e.Name, e.Address, e.City, e.Region, e.Email, e.Website,
+		storedTime(time.Now()), e.CompanyID,
+	)
+	return err
+}
+
+// EnrichCandidate is a company that may need registry enrichment, with its
+// current OLX job count for prioritization.
+type EnrichCandidate struct {
+	ID       string
+	Name     string
+	NIP      string
+	JobCount int
+}
+
+// CompaniesNeedingEnrichment returns companies never enriched (or enriched
+// before staleCutoff), ordered by job count descending — the "posts many
+// listings" prospects come first. minJobs filters low-signal sellers.
+func (s *Store) CompaniesNeedingEnrichment(ctx context.Context, staleCutoff time.Time, minJobs, limit int) ([]EnrichCandidate, error) {
+	rows, err := s.db.QueryContext(ctx,
+		`SELECT c.id, COALESCE(c.name, ''), COALESCE(c.nip, ''), COUNT(j.id) AS n
+		 FROM companies c
+		 LEFT JOIN jobs j ON j.company_id = c.id
+		 WHERE c.enriched_at IS NULL OR c.enriched_at < ?
+		 GROUP BY c.id
+		 HAVING n >= ?
+		 ORDER BY n DESC, c.name ASC
+		 LIMIT ?`,
+		storedTime(staleCutoff), minJobs, limit,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []EnrichCandidate
+	for rows.Next() {
+		var e EnrichCandidate
+		if err := rows.Scan(&e.ID, &e.Name, &e.NIP, &e.JobCount); err != nil {
+			return nil, err
+		}
+		out = append(out, e)
+	}
+	return out, rows.Err()
+}
+
+// GetBizraportCache returns the cached /api/dane payload for a KRS, its
+// fetch time, and whether a usable row was found.
+func (s *Store) GetBizraportCache(ctx context.Context, krs string) (json.RawMessage, time.Time, bool, error) {
+	var raw string
+	var fetchedAt sql.NullString
+	err := s.db.QueryRowContext(ctx,
+		`SELECT raw_json, fetched_at FROM bizraport_cache WHERE krs = ?`, krs,
+	).Scan(&raw, &fetchedAt)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, time.Time{}, false, nil
+	}
+	if err != nil {
+		return nil, time.Time{}, false, err
+	}
+	var t time.Time
+	if fetchedAt.Valid {
+		if parsed, ok := ParseStoredTime(fetchedAt.String); ok {
+			t = parsed
+		}
+	}
+	return json.RawMessage(raw), t, true, nil
+}
+
+// UpsertBizraportCache stores (or refreshes) the raw /api/dane payload for a KRS.
+func (s *Store) UpsertBizraportCache(ctx context.Context, krs string, raw []byte, fetchedAt time.Time) error {
+	if krs == "" {
+		return nil
+	}
+	s.writeMu.Lock()
+	defer s.writeMu.Unlock()
+	_, err := s.db.ExecContext(ctx,
+		`INSERT INTO bizraport_cache (krs, raw_json, fetched_at) VALUES (?,?,?)
+		 ON CONFLICT(krs) DO UPDATE SET raw_json = excluded.raw_json, fetched_at = excluded.fetched_at`,
+		krs, string(raw), storedTime(fetchedAt),
+	)
+	return err
 }
 
 // SyncRun is a single sync invocation row in sync_runs.

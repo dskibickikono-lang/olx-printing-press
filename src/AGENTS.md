@@ -35,7 +35,9 @@ Use `--yes --no-input` only after the target, arguments, and side effects are cl
 
 For install, auth, examples, and longer product guidance, read `README.md` and `SKILL.md`. This file intentionally stays small so repo-local agents get invariant local guidance without duplicating the generated docs.
 
-If you are running the MCP server and want to disable `olx_sync` to ensure complete read-only operation with no live OLX requests, start the server with `--read-only` or env `READ_ONLY_MODE=true`.
+If you are running the MCP server and want complete read-only operation with no live network requests, start it with `--read-only` or env `READ_ONLY_MODE=true`. This disables both `olx_sync` (live OLX) and `olx_enrich` (live bizraport.pl), leaving only local-store reads.
+
+The `enrich` command and `olx_enrich` tool call the bizraport.pl registry API; credentials come from the `[bizraport]` config section or `BIZRAPORT_EMAIL`/`BIZRAPORT_PASSWORD`. bizraport bills per returned row, so prefer the per-KRS cache and `--limit`/`--budget-pln` guards.
 
 ## Local Customizations
 
