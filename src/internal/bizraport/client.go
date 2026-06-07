@@ -18,6 +18,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -246,8 +247,17 @@ func rawToString(raw json.RawMessage) string {
 // list of KRS numbers. The bool reports whether results were truncated
 // (>100k matches or a `limit` was applied). Two-step enrichment: feed these
 // KRS numbers to GetByKRS.
-func (c *Client) Search(ctx context.Context, q string) ([]string, bool, error) {
-	raw, err := c.get(ctx, "/api/szukaj", url.Values{"q": {q}})
+//
+// limit caps how many firms the endpoint returns. /api/szukaj bills 0.02 PLN
+// per RETURNED firm, so passing limit>0 (sized to how many candidates the
+// caller will actually inspect) is the difference between paying for a handful
+// of rows and paying for the entire match set. limit<=0 leaves it unbounded.
+func (c *Client) Search(ctx context.Context, q string, limit int) ([]string, bool, error) {
+	params := url.Values{"q": {q}}
+	if limit > 0 {
+		params.Set("limit", strconv.Itoa(limit))
+	}
+	raw, err := c.get(ctx, "/api/szukaj", params)
 	if err != nil {
 		return nil, false, err
 	}
