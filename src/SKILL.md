@@ -95,6 +95,56 @@ No authentication required.
 
 Run `olx-pp-cli doctor` to verify setup.
 
+## Build & Deploy
+
+This is compiled Go — **source edits do nothing until you rebuild the binary**.
+
+- `make build-all` (run from `src/`) writes to **`src/bin/`**.
+- The binaries on `$PATH` are symlinked from **`<project>/bin/`** (root bin), e.g. `~/.local/bin/olx-pp-cli` → `<project>/bin/olx-pp-cli`.
+- ⚠️ These are **two different locations**. `make build-all` alone does **not** update the root `bin/` that the symlinks point at. After building, either copy `src/bin/*` → `bin/`, or build straight into root bin:
+
+  ```bash
+  cd src
+  go build -o ../bin/olx-pp-cli ./cmd/olx-pp-cli
+  go build -o ../bin/olx-pp-mcp ./cmd/olx-pp-mcp
+  ```
+
+  Keep **both** locations current to avoid running stale code from whichever path is resolved.
+
+## Known issues / gotchas
+
+- **Stale-binary trap.** Because Go is compiled, the running CLI **and** the long-lived MCP server keep executing whatever binary was last built — a fresh `git pull`/commit changes nothing until you rebuild (see Build & Deploy). Worse: the MCP server is a persistent process, so even after you rebuild `bin/olx-pp-mcp` it **keeps serving the old code until the MCP server (Claude session) is restarted**. After any source fix: rebuild → for MCP, restart the server; for quick verification prefer the freshly-built **CLI**, which picks up new code immediately. Sanity check: compare binary mtime against the fix commit time (`git show -s --format=%ci <sha>` vs `stat -c %y bin/olx-pp-*`).
+- **Blank-stamp bug (silent enrich corruption).** `enrich` always stamps `enriched_source='bizraport'` + `enriched_at=now`, but writes NIP/KRS/REGON with `COALESCE(NULLIF(?,''), col)`. So a run on **stale/broken parsing code** (e.g. before the `ParseProfile` API-format fix) reports status `"enriched"` while leaving NIP/KRS/REGON **blank** — the row then *looks* enriched and is skipped by future default-TTL runs. Detect with:
+
+  ```bash
+  sqlite3 data/olx_jobs.db \
+    "SELECT id,name FROM companies WHERE enriched_source='bizraport' AND (nip IS NULL OR nip='');"
+  ```
+
+  A nonzero count after a run almost always means you ran a stale binary — rebuild, then force-retry (see Enrich).
+
+## Enrich (registry data via bizraport.pl)
+
+`olx-pp-cli enrich` resolves OLX companies to KRS/NIP/REGON, highest-volume employers first. **Bills per returned row** — gate with `--limit`, preview with `--dry-run`.
+
+- **Force-retry already-stamped rows:** `--ttl-days 0`. The candidate filter is `enriched_at IS NULL OR enriched_at < (now - ttl_days)`, so `0` makes today's stamped rows re-qualify. Note `--ttl-days` also controls the per-KRS cache TTL, so `0` bypasses the cache and **re-bills even already-good rows** — scope with `--limit`/`--min-jobs`.
+- **Clean up blank-stamp residue without re-billing the good rows:** NULL out only the broken stamps, then run a normal-TTL enrich. The default TTL keeps correctly-enriched rows "fresh" (skipped, no re-bill); only the freed rows + never-enriched + previous no-matches get processed:
+
+  ```bash
+  sqlite3 data/olx_jobs.db \
+    "UPDATE companies SET enriched_at=NULL, enriched_source=NULL \
+     WHERE enriched_source='bizraport' AND (nip IS NULL OR nip='');"
+  olx-pp-cli enrich --min-jobs 5 --ttl-days 7 --limit 50 --json
+  ```
+
+- **Expected no-matches** (don't keep retrying): brand-only OLX display names that don't string-match a Polish legal entity (Manpower Poland, Saint-Gobain, Nestle, OTTO Work Force, EWL S.A.), and informal/private seller names (first names, "Dział Rekrutacji"). These need a manually-seeded NIP to resolve via the `GetByNIP` path. Raising `--max-candidates` only helps when the name search already returns hits.
+
+## Phones (OLX limited-phones)
+
+- **OLX anti-abuse blocks the limited-phones endpoint after ~12 calls**, then a sticky block for the rest of the run plus a **24h cooldown** (`--phones-cooldown`, default 24). A full walk typically harvests only ~a dozen phones before the block. Phone rps is throttled hard (`--rps-phones`, default 0.2).
+- `sync --include-phones` fetches phones/details **only for new or bumped offers** (gated on `!fresh`, i.e. stored `refreshed_at` older than OLX's `last_refresh_time`). It does **not** backfill phones for the whole existing corpus in one pass.
+- **To grow phone coverage:** run `sync --include-phones` repeatedly across days. Recruitment agencies re-bump listings constantly, so each run re-hydrates the freshly-bumped subset and grabs another small batch of phones before the block. Don't expect to backfill thousands of old jobs at once.
+
 ## Agent Mode
 
 Add `--agent` to any command. Expands to: `--json --compact --no-input --no-color --yes`.
