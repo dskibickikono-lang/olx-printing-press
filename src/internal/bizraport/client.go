@@ -142,22 +142,78 @@ func (c *Client) dane(ctx context.Context, key, val string) (*CompanyProfile, er
 
 // ParseProfile flattens a raw /api/dane payload into a CompanyProfile.
 // Exported so cached responses can be reused without a network call.
+//
+// The live API wraps results in {"data":[{...}]} and expresses
+// informacje_o_firmie as an array of {nazwa_pola, wartosc} pairs.
 func ParseProfile(raw json.RawMessage) (*CompanyProfile, error) {
+	var wrapper struct {
+		Data []json.RawMessage `json:"data"`
+	}
+	if err := json.Unmarshal(raw, &wrapper); err != nil {
+		return nil, fmt.Errorf("decode /api/dane envelope: %w", err)
+	}
+	if len(wrapper.Data) == 0 {
+		return nil, nil
+	}
+	item := wrapper.Data[0]
+
 	var top struct {
 		KRS           string          `json:"krs"`
-		NIP           string          `json:"nip"`
+		NIPRaw        json.RawMessage `json:"nip"`
 		KodPKD        string          `json:"kod_pkd"`
 		OpisPKD       string          `json:"opis_pkd"`
 		InformacjeRaw json.RawMessage `json:"informacje_o_firmie"`
 	}
-	if err := json.Unmarshal(raw, &top); err != nil {
-		return nil, fmt.Errorf("decode /api/dane: %w", err)
+	if err := json.Unmarshal(item, &top); err != nil {
+		return nil, fmt.Errorf("decode /api/dane item: %w", err)
 	}
-	p := &CompanyProfile{KRS: top.KRS, NIP: top.NIP, KodPKD: top.KodPKD, OpisPKD: top.OpisPKD, Raw: raw}
-	// Nested objects arrive as serialized JSON strings; parse defensively
-	// (also tolerate a real nested object, should the API ever change).
-	if m := parseMaybeStringJSON(top.InformacjeRaw); m != nil {
-		p.Info = Informacje{
+
+	p := &CompanyProfile{
+		KRS:     keepDigits(top.KRS),
+		NIP:     rawToString(top.NIPRaw),
+		KodPKD:  top.KodPKD,
+		OpisPKD: top.OpisPKD,
+		Raw:     raw,
+	}
+	p.Info = parseInformacje(top.InformacjeRaw)
+	if p.NIP == "" {
+		p.NIP = p.Info.NIP
+	}
+	return p, nil
+}
+
+// parseInformacje handles the array-of-pairs format used by the live API
+// and falls back to a JSON-object (or string-encoded object) format.
+func parseInformacje(raw json.RawMessage) Informacje {
+	if len(raw) == 0 {
+		return Informacje{}
+	}
+	var pairs []struct {
+		NazwaPola string `json:"nazwa_pola"`
+		Wartosc   string `json:"wartosc"`
+	}
+	if err := json.Unmarshal(raw, &pairs); err == nil {
+		m := make(map[string]string, len(pairs))
+		for _, p := range pairs {
+			m[p.NazwaPola] = p.Wartosc
+		}
+		return Informacje{
+			Nazwa:            m["nazwa"],
+			NIP:              m["nip"],
+			REGON:            m["regon"],
+			FormaPrawna:      m["forma_prawna"],
+			Ulica:            m["ulica"],
+			KodPocztowy:      m["kod_pocztowy"],
+			Miejscowosc:      m["miejscowosc"],
+			Wojewodztwo:      m["wojewodztwo"],
+			KapitalZakladowy: m["kapital_zakladowy"],
+			Email:            m["email"],
+			StronaWWW:        m["adres_strony_internetowej"],
+		}
+	}
+	// Fallback: JSON object or string-encoded object (legacy / future API change).
+	if m := parseMaybeStringJSON(raw); m != nil {
+		return Informacje{
 			Nazwa:            asString(m["nazwa"]),
 			NIP:              asString(m["nip"]),
 			REGON:            asString(m["regon"]),
@@ -171,11 +227,19 @@ func ParseProfile(raw json.RawMessage) (*CompanyProfile, error) {
 			StronaWWW:        asString(m["adres_strony_internetowej"]),
 		}
 	}
-	// Prefer the registry NIP from informacje when the top-level one is blank.
-	if p.NIP == "" {
-		p.NIP = p.Info.NIP
+	return Informacje{}
+}
+
+// rawToString decodes a json.RawMessage that may be a string or number.
+func rawToString(raw json.RawMessage) string {
+	if len(raw) == 0 {
+		return ""
 	}
-	return p, nil
+	var v any
+	if err := json.Unmarshal(raw, &v); err != nil {
+		return ""
+	}
+	return asString(v)
 }
 
 // Search resolves a free-text query (company name, NIP, KRS or REGON) to a
