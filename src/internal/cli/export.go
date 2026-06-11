@@ -26,6 +26,7 @@ type exportFlags struct {
 	minJobs     int
 	titleQuery  string
 	limit       int
+	days        int
 }
 
 func newExportCmd(root *rootFlags) *cobra.Command {
@@ -43,7 +44,7 @@ Examples:
 			return runExport(cmd.Context(), cmd, root, f)
 		},
 	}
-	cmd.Flags().StringVar(&f.kind, "kind", "jobs", "What to export: jobs | companies")
+	cmd.Flags().StringVar(&f.kind, "kind", "jobs", "What to export: jobs | companies | raw-leads")
 	cmd.Flags().StringVar(&f.format, "format", "csv", "Output format: csv | json")
 	cmd.Flags().StringVar(&f.out, "out", "", "Output file path (default: <project>/data/exports/<timestamp>-<kind>.<format>)")
 	cmd.Flags().StringVar(&f.categories, "category", "", "Filter by category_id (comma-separated)")
@@ -52,12 +53,13 @@ Examples:
 	cmd.Flags().IntVar(&f.minJobs, "min-jobs", 1, "(--kind companies) minimum jobs per company")
 	cmd.Flags().StringVar(&f.titleQuery, "title", "", "(--kind jobs) substring match on title")
 	cmd.Flags().IntVar(&f.limit, "limit", 1000, "Max rows to export")
+	cmd.Flags().IntVar(&f.days, "days", 7, "raw-leads: include jobs fetched in the last N days")
 	return cmd
 }
 
 func runExport(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *exportFlags) error {
-	if f.kind != "jobs" && f.kind != "companies" {
-		return usageErr("--kind must be 'jobs' or 'companies', got %q", f.kind)
+	if f.kind != "jobs" && f.kind != "companies" && f.kind != "raw-leads" {
+		return usageErr("--kind must be 'jobs', 'companies', or 'raw-leads', got %q", f.kind)
 	}
 	if f.format != "csv" && f.format != "json" {
 		return usageErr("--format must be 'csv' or 'json', got %q", f.format)
@@ -115,6 +117,72 @@ func runExport(ctx context.Context, cmd *cobra.Command, root *rootFlags, f *expo
 			return err
 		}
 		fmt.Fprintf(cmd.OutOrStdout(), "wrote %d companies to %s\n", len(rows), out)
+	case "raw-leads":
+		if f.format != "json" {
+			return usageErr("--kind raw-leads requires --format json")
+		}
+		leadRows, err := st.RawLeadRows(ctx, f.days)
+		if err != nil {
+			return err
+		}
+		type contractOffer struct {
+			ExternalID  string         `json:"externalId"`
+			NIP         *string        `json:"nip"`
+			CompanyName string         `json:"companyName"`
+			Position    string         `json:"position"`
+			Location    string         `json:"location"`
+			Vacancies   int            `json:"vacancies"`
+			SalaryFrom  *float64       `json:"salaryFrom"`
+			SalaryTo    *float64       `json:"salaryTo"`
+			Phone       *string        `json:"phone"`
+			Email       *string        `json:"email"`
+			Score       *int           `json:"score"`
+			ScrapedAt   string         `json:"scrapedAt"`
+			Extra       map[string]any `json:"extra"`
+		}
+		strPtr := func(s string) *string {
+			if s == "" {
+				return nil
+			}
+			return &s
+		}
+		offers := make([]contractOffer, 0, len(leadRows))
+		for _, r := range leadRows {
+			// Consumer contract: reject files containing empty companyName.
+			// Skip jobs whose company was not resolved via the LEFT JOIN.
+			if r.CompanyName == "" {
+				continue
+			}
+			loc := r.City
+			if loc == "" {
+				loc = r.Region
+			}
+			offers = append(offers, contractOffer{
+				ExternalID:  r.JobID,
+				NIP:         strPtr(r.NIP),
+				CompanyName: r.CompanyName,
+				Position:    r.Title,
+				Location:    loc,
+				Vacancies:   1,
+				Phone:       strPtr(r.Phone),
+				Email:       strPtr(r.Email),
+				ScrapedAt:   r.FetchedAt.UTC().Format(time.RFC3339),
+				Extra:       map[string]any{},
+			})
+		}
+		payload := map[string]any{
+			"contractVersion": 1,
+			"source":          "olx",
+			"exportedAt":      time.Now().UTC().Format(time.RFC3339),
+			"offers":          offers,
+		}
+		enc := json.NewEncoder(w)
+		enc.SetIndent("", "  ")
+		enc.SetEscapeHTML(false)
+		if err := enc.Encode(payload); err != nil {
+			return err
+		}
+		fmt.Fprintf(cmd.OutOrStdout(), "wrote %d raw-leads to %s\n", len(offers), out)
 	}
 	return nil
 }
