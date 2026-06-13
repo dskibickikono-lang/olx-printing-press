@@ -223,24 +223,22 @@ func resolveProfile(ctx context.Context, st *store.Store, client *bizraport.Clie
 		return p, false, nil
 	}
 
-	krsList, _, err := client.Search(ctx, cand.Name)
+	// Bound the search to the number of candidates we will actually inspect:
+	// /api/szukaj bills per RETURNED firm, so asking for the full match set and
+	// then only looking at the top maxCandidates is pure waste. The returned
+	// list is already <= maxCandidates, so we name-match across all of it.
+	krsList, _, err := client.Search(ctx, cand.Name, maxCandidates)
 	if err != nil {
 		return nil, false, err
 	}
 	if len(krsList) == 0 {
 		return nil, false, nil
 	}
-	if len(krsList) == 1 {
-		return fetchKRSCached(ctx, st, client, krsList[0], ttl)
-	}
 
-	// Ambiguous: fetch a bounded number of candidates and pick by name match.
+	// Pick the candidate whose registry name matches; never trust an unverified
+	// top hit, even when the search returned a single row.
 	want := normalizeCompanyName(cand.Name)
-	limit := maxCandidates
-	if limit > len(krsList) {
-		limit = len(krsList)
-	}
-	for _, krs := range krsList[:limit] {
+	for _, krs := range krsList {
 		p, cached, err := fetchKRSCached(ctx, st, client, krs, ttl)
 		if err != nil {
 			return nil, false, err
